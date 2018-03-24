@@ -1,0 +1,12 @@
+{
+    "vars": [
+        {
+            "name": "someVariable",
+            "value": "blergh"
+        },
+        {
+            "name": "someOtherVariable",
+            "value": "ohMYMY"
+        }
+    ]
+}

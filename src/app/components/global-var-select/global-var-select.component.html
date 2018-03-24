@@ -1,0 +1,4 @@
+<select #varSelect [(ngModel)]="condition.varID">
+  <option [value]="'none'">None Selected</option> 
+  <option [value]="variable.id" *ngFor="let variable of variables">{{variable.name}}</option>
+</select>
