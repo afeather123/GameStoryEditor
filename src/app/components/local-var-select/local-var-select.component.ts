@@ -1,36 +1,41 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, ChangeDetectorRef, OnDestroy, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ElementRef, Input, Output, EventEmitter, ViewChild, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Variable } from '../../models/variable';
-import { VariableSelectService } from '../../services/variable-select.service';
-import { timeout } from 'q';
 import { Condition } from '../../models/condition';
 import { Subscription } from 'rxjs/Subscription';
+import { VariableSelectService } from '../../services/variable-select.service';
+import { ScopeVariables } from '../../models/ScopeVariables';
+
 declare var $: any;
 
 @Component({
-  selector: 'app-global-var-select',
-  templateUrl: './global-var-select.component.html',
-  styleUrls: ['./global-var-select.component.css']
+  selector: 'app-local-var-select',
+  templateUrl: './local-var-select.component.html',
+  styleUrls: ['./local-var-select.component.css']
 })
-export class GlobalVarSelectComponent implements OnInit, OnDestroy {
+export class LocalVarSelectComponent implements OnInit, OnDestroy {
 
-  variables: Variable[] = [];
+  globalVariables: Variable[] = [];
+  localScopeVariables: Variable[] = [];
   @ViewChild('varSelect') varSelect: ElementRef;
   @Input() condition: Condition;
   @Output() changeCondition = new EventEmitter<Condition>();
   private nameChangeSubscription: Subscription;
+  private scopeChangeSubscription: Subscription;
   private deleteVarSubscription: Subscription;
 
   constructor(private variableSelectService: VariableSelectService, private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.variables = this.variableSelectService.getAllVariables();
-    setTimeout(() => {$(this.varSelect.nativeElement).select2(); }, 2 );
+    this.globalVariables = this.variableSelectService.globalVars.vars;
+    this.localScopeVariables = this.variableSelectService.currentLocalScope.vars;
+    setTimeout(() => {$(this.varSelect.nativeElement).select2({width: 'resolve'}); }, 2 );
     $(this.varSelect.nativeElement).value = this.condition.varID;
     $(this.varSelect.nativeElement).bind('change', (e) => {
       this.condition.varID = e.target.value;
       this.changeCondition.emit(this.condition);
     });
     this.nameChangeSubscription = this.variableSelectService.NameChangeObservable().subscribe(() => {this.OnVarNameChange(); });
+    this.scopeChangeSubscription = this.variableSelectService.LocalScopeObservable().subscribe((scope) => { this.OnChangeScope(scope); } );
     this.deleteVarSubscription = this.variableSelectService.DeleteVariableObservable().subscribe((id: string) => {
       if (this.condition.varID === id) {
         this.condition.varID = 'none';
@@ -42,10 +47,11 @@ export class GlobalVarSelectComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.nameChangeSubscription.unsubscribe();
+    this.scopeChangeSubscription.unsubscribe();
   }
 
   OnAddVariable(variable: Variable) {
-    this.variables.unshift(variable);
+    this.globalVariables.unshift(variable);
   }
 
   OnVarNameChange() {
@@ -56,13 +62,22 @@ export class GlobalVarSelectComponent implements OnInit, OnDestroy {
   }
 
   OnLoadVariables(vars: Variable[]) {
-    this.variables = vars;
+    this.globalVariables = vars;
     setTimeout(() => {$(this.varSelect.nativeElement).select2(); }, 2 );
   }
 
   OnChange(e: any) {
     console.log('working?');
     this.condition.varID = e.target.value;
+  }
+
+  OnChangeScope(scope: ScopeVariables) {
+    if (scope != null) {
+      this.localScopeVariables = scope.vars;
+      this.changeDetectorRef.detectChanges();
+    } else {
+      this.localScopeVariables = [];
+    }
   }
 
 }

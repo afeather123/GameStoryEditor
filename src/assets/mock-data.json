@@ -2,11 +2,26 @@
     "vars": [
         {
             "name": "someVariable",
-            "value": "blergh"
+            "value": "blergh",
+            "id": "0"
         },
         {
             "name": "someOtherVariable",
-            "value": "ohMYMY"
+            "value": "ohMYMY",
+            "id": "1"
         }
-    ]
+    ],
+    "jstree": {
+        "core": {
+        "check_callback": true,
+        "data": [{
+          "text": "Root node",
+          "children": [{
+              "type": "folder",
+              "text": "Child node 1"
+            }
+          ]
+        }]
+      }
+    }
 }

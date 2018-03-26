@@ -1,0 +1,45 @@
+<div class="card">
+  <div class="card-header" role="tab" id="section1HeaderId">
+    <h5 class="mb-0">
+      <a data-toggle="collapse" data-parent="#accordianId" href="#{{'cc' + id}}" aria-expanded="true" [attr.aria-controls]="'cc' + id">
+        Conditions
+        <button class="btn btn-square float-right" (click)="addCondition($event)">
+          <i class="fa fa-plus"></i>
+        </button>
+      </a>
+    </h5>
+  </div>
+  <div id="{{'cc' + id}}" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId" #collapse>
+    <div class="card-body">
+      <div class="row mb-2" *ngFor="let condition of conditions">
+        <app-local-var-select [condition]="condition" (changeCondition)="conditionChanged(condition)" *ngIf="conditionOperators.local"></app-local-var-select>
+        <app-global-var-select [condition]="condition" (changeCondition)="conditionChanged(condition)" *ngIf="!conditionOperators.local"></app-global-var-select>
+        <div *ngIf="condition.type === 'string'" class="form-inline">
+          <select [(ngModel)]="condition.operator" class="form-control">
+            <option [value]="operator" *ngFor="let operator of conditionOperators.stringOperators">{{operator}}</option>
+          </select>
+          <input type="text" [(ngModel)]="condition.value" class="form-control">
+        </div>
+        <div *ngIf="condition.type === 'number'" class="form-inline">
+          <select [(ngModel)]="condition.operator" class="form-control">
+            <option [value]="operator" *ngFor="let operator of conditionOperators.numberOperators">{{operator}}</option>
+          </select>
+          <input type="number" [(ngModel)]="condition.value" class="form-control">
+        </div>
+        <div *ngIf="condition.type === 'boolean'" class="form-inline">
+          <select class="form-control" [(ngModel)]="condition.operator" *ngIf="conditionOperators.boolToggle">
+            <option value="=">=</option>
+            <option value="toggle">toggle</option>
+          </select>
+          <select (change)="onBoolChange($event, condition)" [value]="condition.value ? 'true' : 'false'" class="form-control" *ngIf="!(condition.operator === 'toggle')">
+            <option value="true">True</option>
+            <option value="false">False</option>
+          </select>
+        </div>
+        <button class="btn btn-danger float-right" (click)="deleteCondition(condition)">
+          <i class="fa fa-trash"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

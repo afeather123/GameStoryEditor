@@ -1,0 +1,112 @@
+<div class="card" *ngIf="currentScope != null">
+  <div class="card-header bg-primary" role="tab" id="section1HeaderId">
+    <h5 class="mb-0">
+      <a data-toggle="collapse" data-parent="#accordianId" href="#localVars" aria-expanded="true" aria-controls="localVars"
+        class="text-light">
+        Local Variables
+      </a>
+    </h5>
+  </div>
+  <div id="localVars" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
+    <div class="card-body">
+      <div id="accordianId" role="tablist" aria-multiselectable="true">
+        <div class="card">
+          <div class="card-header" role="tab" id="section1HeaderId">
+            <h5 class="mb-0">
+              <a data-toggle="collapse" data-parent="#accordianId" href="#localStringVars" aria-expanded="true" aria-controls="localStringVars">
+                String Variables
+                <button class="btn btn-square float-right" (click)="this.addVariable($event, 'string')">
+                    <i class="fa fa-plus"></i>
+                </button>
+              </a>
+            </h5>
+          </div>
+          <div id="localStringVars" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId" #stringVars>
+            <div class="card-body">
+              <div *ngFor="let variable of currentScope.stringVars">
+                <div class="mb-2 row">
+                  <div class="col-sm-5">
+                    <input type="text" (keyup)="OnChange()" data-id="{{variable.id.toString()}}" [(ngModel)]="variable.name" class="form-control">
+                  </div>
+                  <div class="col-sm-5">
+                    <input type="text" [(ngModel)]="variable.value" class="form-control">
+                  </div>
+                  <div class="col-sm-2">
+                    <button class="btn btn-danger" type="submit" (click)="deleteVariable(variable.id.toString())">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" role="tab" id="section2HeaderId">
+            <h5 class="mb-0">
+              <a data-toggle="collapse" data-parent="#accordianId" href="#localBoolVars" aria-expanded="true" aria-controls="localBoolVars">
+                Boolean Variables
+                <button class="btn btn-square float-right" (click)="this.addVariable($event, 'boolean')">
+                    <i class="fa fa-plus"></i>
+                </button>
+              </a>
+            </h5>
+          </div>
+          <div id="localBoolVars" class="collapse in" role="tabpanel" aria-labelledby="section2HeaderId" #boolVars>
+            <div class="card-body">
+                <div *ngFor="let variable of currentScope.boolVars">
+                    <div class="mb-2 row">
+                      <div class="col-sm-5">
+                        <input type="text" (keyup)="OnChange()" data-id="{{variable.id.toString()}}" [(ngModel)]="variable.name" class="form-control">
+                      </div>
+                      <div class="col-sm-5">
+                        <select class="form-control" (change)="this.ChangeBoolValue(variable, $event)">
+                          <option value="true" [selected]="variable.value">True</option>
+                          <option value="false" [selected]="!variable.value">False</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-2">
+                        <button class="btn btn-danger" type="submit" (click)="deleteVariable(variable.id.toString())">
+                          <i class="fa fa-trash"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" role="tab" id="section1HeaderId">
+            <h5 class="mb-0">
+              <a data-toggle="collapse" data-parent="#accordianId" href="#localNumVars" aria-expanded="true" aria-controls="localNumVars">
+                Number Variables
+                <button class="btn btn-square float-right" (click)="this.addVariable($event, 'number')">
+                    <i class="fa fa-plus"></i>
+                </button>
+              </a>
+            </h5>
+          </div>
+          <div id="localNumVars" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId" #numVars>
+            <div class="card-body">
+              <div *ngFor="let variable of currentScope.numVars">
+                <div class="mb-2 row">
+                  <div class="col-sm-5">
+                    <input type="text" (keyup)="OnChange()" data-id="{{variable.id.toString()}}" [(ngModel)]="variable.name" class="form-control">
+                  </div>
+                  <div class="col-sm-5">
+                    <input type="number" [(ngModel)]="variable.value" class="form-control">
+                  </div>
+                  <div class="col-sm-2">
+                    <button class="btn btn-danger" type="submit" (click)="deleteVariable(variable.id.toString())">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

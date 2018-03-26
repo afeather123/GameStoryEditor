@@ -1,0 +1,29 @@
+<div class="card">
+    <div class="card-header" role="tab" id="section1HeaderId">
+      <h5 class="mb-0">
+        <a data-toggle="collapse" data-parent="#accordianId" href="#nodePreview" aria-expanded="true" aria-controls="nodePreview">
+          Nodes
+          <button class="btn btn-square float-right" (click)="addNode($event)">
+              <i class="fa fa-plus"></i>
+          </button>
+        </a>
+      </h5>
+    </div>
+    <div id="nodePreview" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
+      <div class="card-body">
+        <div *ngFor="let node of currentInteractable.nodes.array">
+          <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    {{node.name}}
+                    <button class="btn btn-danger float-right" (click)="deleteNode(node)">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </h5>
+                <p>{{node.text}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

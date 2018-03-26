@@ -29,6 +29,9 @@ export class ScopeVariables {
 
     deleteVariable(id: string) {
         let index = this.keys.indexOf(id);
+        if (index <= -1) {
+            return;
+        }
         const type = typeof this.vars[index].value;
         this.vars.splice(index, 1);
         this.keys.splice(index, 1);

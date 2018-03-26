@@ -2,11 +2,15 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/observable';
 import { Subject } from 'rxjs/Subject';
 import { Variable } from '../models/variable';
-import { NameChange } from '../models/NameChange';
-import { Http, Response } from '@angular/http';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { ScopeVariables } from '../models/ScopeVariables';
+import { ArrayList } from '../models/arraylist';
+
+interface ScopeVarObject {
+  [key: string]: ScopeVariables;
+}
 
 @Injectable()
 export class VariableSelectService {
@@ -15,26 +19,28 @@ export class VariableSelectService {
     this.getJSON().subscribe((data: any) => {this.loadData(data.json().vars); });
   }
 
-  allVariables: Variable[] = [];
-  allKeys: string[] = [];
+  allVariables: ArrayList<Variable> = new ArrayList<Variable>();
+  // allVariables: Variable[] = [];
+  // allKeys: string[] = [];
   globalVars: ScopeVariables = new ScopeVariables();
+  localVars: ScopeVarObject = {};
+  currentLocalScope: ScopeVariables = new ScopeVariables();
+  currentScopeID: string;
 
   varCount = 0;
 
-  private varsListeners = new Subject<Variable[]>();
-  private nameChangeListeners = new Subject<NameChange>();
+  private nameChangeListeners = new Subject();
+  private deleteVariableListeners = new Subject<string>();
+  private localScopeListeners = new Subject<ScopeVariables>();
 
   getJSON(): Observable<any> {
     return this.http.get('/assets/mock-data.json');
   }
 
-  loadData(data: any) {
+  loadData(data: Variable[]) {
     for (let i = 0; i < data.length; i++) {
-      const variable = {name: data[i].name, value: data[i].value, id: this.varCount};
-      this.allVariables.push(variable);
-      this.allKeys.push(this.varCount.toString());
-      this.globalVars.addVariable(variable);
-      this.varCount++;
+      this.allVariables.Add(data[i]);
+      this.globalVars.addVariable(data[i]);
     }
   }
 
@@ -44,11 +50,14 @@ export class VariableSelectService {
     for (let i = 0; i < this.globalVars.vars.length; i++) {
       this.globalVars.keys.push(this.globalVars.vars[i].id.toString());
     }
-    this.varsListeners.next(vars);
   }
 
   getAllVariables(): Variable[] {
-    return this.allVariables;
+    return this.allVariables.array;
+  }
+
+  getLocalVariables(): Variable[] {
+    return this.currentLocalScope.vars;
   }
 
   addNewVariable(type: string, isLocal: boolean) {
@@ -65,29 +74,71 @@ export class VariableSelectService {
         const variable = {
         name: 'variable' + this.varCount.toString(),
         value: value,
-        id: this.varCount
+        id: 'none'
         };
-    this.allVariables.push(variable);
-    this.allKeys.push(this.varCount.toString());
+    this.allVariables.Add(variable);
     if (!isLocal) {
       this.globalVars.addVariable(variable);
+    } else {
+      this.currentLocalScope.addVariable(variable);
     }
     this.varCount++;
   }
 
   deleteVariable(id: string) {
-    const index = this.allKeys.indexOf(id.toString());
-    this.allVariables.splice(index, 1);
-    this.allKeys.splice(index, 1);
+    this.allVariables.Remove(id);
     this.globalVars.deleteVariable(id);
+    if (this.currentLocalScope != null) {
+      this.currentLocalScope.deleteVariable(id);
+    }
+    this.deleteVariableListeners.next(id);
   }
 
   renameVariable() {
-      this.nameChangeListeners.next();
+    this.nameChangeListeners.next();
   }
 
-  NameChangeObservable(): Observable<NameChange> {
+  NameChangeObservable(): Observable<any> {
     return this.nameChangeListeners.asObservable();
+  }
+
+  AddNewScope(interactableId: string) {
+    this.localVars[interactableId] = new ScopeVariables();
+  }
+
+  DeleteScope(interactableId: string) {
+    if (this.currentScopeID = interactableId) {
+      this.localScopeListeners.next(null);
+      this.currentLocalScope = null;
+      this.localScopeListeners.next(null);
+    }
+    const keys = this.localVars[interactableId].keys;
+    delete this.localVars[interactableId];
+    console.log(keys.length);
+    keys.forEach(key => {
+      this.deleteVariable(key);
+    });
+    this.nameChangeListeners.next();
+  }
+
+  ChangeLocalScope(interactableId: string) {
+    this.currentLocalScope = this.localVars[interactableId];
+    this.currentScopeID = interactableId;
+    this.localScopeListeners.next(this.currentLocalScope);
+  }
+
+  LocalScopeObservable(): Observable<ScopeVariables> {
+    return this.localScopeListeners.asObservable();
+  }
+
+  DeleteVariableObservable(): Observable<string> {
+    return this.deleteVariableListeners.asObservable();
+  }
+
+  CheckVariableType(id: string): string {
+    const variable = this.allVariables.GetAtId(id);
+    console.log(variable);
+    return typeof variable.value;
   }
 }
 

@@ -1,0 +1,5 @@
+<select #varSelect [(ngModel)]="condition.varID">
+  <option [value]="'none'">None Selected</option> 
+  <option [value]="variable.id" *ngFor="let variable of globalVariables">{{variable.name}}</option>
+  <option [value]="variable.id" *ngFor="let variable of localScopeVariables">{{variable.name}}</option>
+</select>
