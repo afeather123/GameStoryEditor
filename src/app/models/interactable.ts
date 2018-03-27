@@ -2,10 +2,13 @@ import { DialogueNode } from './node';
 import { Redirect } from './redirect';
 import { NodeObject } from './nodeobject';
 import { ArrayList } from './arraylist';
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/observable';
+import { EntryPoint } from './entrypoint';
 
 export class Interactable {
     nodes: ArrayList<DialogueNode> = new ArrayList<DialogueNode>();
-    entryPoints: Redirect[] = [];
+    entryPoints: EntryPoint[] = [];
 
     AddNode (): DialogueNode {
         const newNode: DialogueNode = {
@@ -20,9 +23,14 @@ export class Interactable {
     AddEntryPoint () {
         const newNode = this.AddNode();
         const newEntryPoint = {
-            nodeID: newNode.id,
-            conditions: []
-        } as Redirect;
+            name: 'entryPoint' + newNode.id,
+            id: newNode.id.toString(),
+            redirect: {
+                nodeID: newNode.id,
+                conditions: []
+            }
+        };
         this.entryPoints.push(newEntryPoint);
     }
+
 }

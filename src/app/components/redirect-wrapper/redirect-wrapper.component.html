@@ -1,0 +1,14 @@
+<div class="card">
+  <div class="card-header" role="tab" id="section1HeaderId">
+    <h5 class="mb-0">
+      <a data-toggle="collapse" data-parent="#accordianId" href="#redirectWrapper{{id}}" aria-expanded="true" [attr.aria-controls]="'redirectWrapper' + id">
+        {{nodeName}}
+      </a>
+    </h5>
+  </div>
+  <div id="redirectWrapper{{id}}" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
+    <div class="card-body">
+      <app-redirect [redirect]="redirect" (selectNode)="GetNodeName($event)"></app-redirect>
+    </div>
+  </div>
+</div>

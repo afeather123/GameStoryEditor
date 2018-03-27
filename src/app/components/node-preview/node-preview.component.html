@@ -20,6 +20,7 @@
                         <i class="fa fa-trash"></i>
                     </button>
                 </h5>
+                <input type="text" [(ngModel)]="node.name" (keyup)="this.renameNode(node.id)">
                 <p>{{node.text}}</p>
             </div>
           </div>

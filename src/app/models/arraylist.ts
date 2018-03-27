@@ -1,4 +1,5 @@
 import { ID } from './id';
+import { Variable } from './variable';
 
 export class ArrayList<T extends ID> {
     array: T[] = [];
@@ -24,23 +25,25 @@ export class ArrayList<T extends ID> {
         this.idCount++;
     }
 
-    Remove(element: (string | T)): boolean {
+    Remove(element: (string | T)): T {
         if (typeof element === 'string') {
             const index = this.keys.indexOf(element);
             if (index >= 0) {
+                const variable = this.array[index];
                 this.array.splice(index, 1);
                 this.keys.splice(index, 1);
-                return true;
+                return variable;
             }
         } else {
             const index = this.array.indexOf(element);
             if (index >= 0) {
+                const variable = this.array[index];
                 this.array.splice(index, 1);
                 this.keys.splice(index, 1);
-                return true;
+                return variable;
             }
         }
-        return false;
+        return null;
     }
 
     GetAtId(id: string): T {

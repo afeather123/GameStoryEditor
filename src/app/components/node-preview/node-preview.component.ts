@@ -26,10 +26,16 @@ export class NodePreviewComponent implements OnInit {
 
   addNode(e: Event) {
     this.currentInteractable.AddNode();
+    this.interactableService.addNode();
     e.stopPropagation();
   }
 
   deleteNode (node: DialogueNode) {
-    this.currentInteractable.nodes.Remove(node);
+    const deletedNode = this.currentInteractable.nodes.Remove(node);
+    this.interactableService.deleteNode(deletedNode.id);
   }
-}
+
+  renameNode (nodeID: string) {
+    this.interactableService.changeNodeName(nodeID);
+  }
+ }

@@ -19,6 +19,13 @@ import { ConditionCollectionComponent } from './components/condition-collection/
 import { InteractableService } from './services/interactable.service';
 import { KeysPipe } from './pipes/keys-pipe.pipe';
 import { NodePreviewComponent } from './components/node-preview/node-preview.component';
+import { Select2Component } from './components/select2/select2.component';
+import { NodeSelectComponent } from './components/node-select/node-select.component';
+import { RedirectComponent } from './components/redirect/redirect.component';
+import { EntrypointComponent } from './components/entrypoint/entrypoint.component';
+import { EntrypointContainerComponent } from './components/entrypoint-container/entrypoint-container.component';
+import { RedirectWrapperComponent } from './components/redirect-wrapper/redirect-wrapper.component';
+import { RedirectContainerComponent } from './components/redirect-container/redirect-container.component';
 
 
 @NgModule({
@@ -33,7 +40,14 @@ import { NodePreviewComponent } from './components/node-preview/node-preview.com
     LocalVarSelectComponent,
     ConditionCollectionComponent,
     KeysPipe,
-    NodePreviewComponent
+    NodePreviewComponent,
+    Select2Component,
+    NodeSelectComponent,
+    RedirectComponent,
+    EntrypointComponent,
+    EntrypointContainerComponent,
+    RedirectWrapperComponent,
+    RedirectContainerComponent
   ],
   imports: [
     BrowserModule,

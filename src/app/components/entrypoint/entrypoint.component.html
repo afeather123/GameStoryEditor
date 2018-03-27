@@ -1,0 +1,15 @@
+<div class="card">
+  <div class="card-header" role="tab" id="section1HeaderId">
+    <h5 class="mb-0">
+      <a data-toggle="collapse" data-parent="#accordianId" href="#entryPoint{{entryPoint.id}}" aria-expanded="true" [attr.aria-controls]="'entryPoint' + entryPoint.id">
+        {{entryPoint.name}}
+      </a>
+    </h5>
+  </div>
+  <div id="entryPoint{{entryPoint.id}}" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
+    <div class="card-body">
+      <input type="text" class="form-control" [(ngModel)]="entryPoint.name">
+      <app-redirect [redirect]="entryPoint.redirect"></app-redirect>
+    </div>
+  </div>
+</div>

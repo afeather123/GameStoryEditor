@@ -1,0 +1,4 @@
+<select #select [(ngModel)]="value.nodeID" (select)="OnChange($event)">
+    <option value="none">None Selected</option>
+    <option [value]="node.id" *ngFor="let node of currentInteractable.nodes.array">{{node.name}}</option>
+</select>

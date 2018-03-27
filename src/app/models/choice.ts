@@ -1,7 +1,8 @@
 import { DialogueNode } from './node';
 import { Condition } from './condition';
-export interface Choice {
-    node: DialogueNode;
+import { NodeID } from './nodeID';
+export interface Choice extends NodeID {
+    nodeID: string;
     setConditions: Condition[];
     conditions: Condition[];
 }

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/observable';
 import { Observer } from 'rxjs/Observer';
 import { Subscriber } from 'rxjs/Subscriber';
 import { Condition } from '../../models/condition';
+import { Redirect } from '../../models/redirect';
 
 @Component({
   selector: 'app-main-editor',
@@ -15,10 +16,9 @@ export class MainEditorComponent implements OnInit {
 
   subscriptionSender$: Observable<Variable[]>;
   index: number;
-  condition: Condition = {
-    varID: '0',
-    operator: '=',
-    value: true
+  redirect: Redirect = {
+    nodeID: '0',
+    conditions: []
   };
   @ViewChild('variableSelect') variableSelect: any;
 
@@ -30,6 +30,5 @@ export class MainEditorComponent implements OnInit {
 
   onSelectChange() {
     this.changeDetectorRef.detectChanges();
-    console.log(this.condition);
   }
 }
