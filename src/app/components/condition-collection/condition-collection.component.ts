@@ -15,6 +15,7 @@ export class ConditionCollectionComponent implements OnInit {
 
   static idcount = 0;
   id: number;
+  @Input() name = 'Condition';
   @ViewChild('collapse') collapse: ElementRef;
   @Input() conditions: Condition[] = [
     {

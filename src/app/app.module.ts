@@ -26,6 +26,13 @@ import { EntrypointComponent } from './components/entrypoint/entrypoint.componen
 import { EntrypointContainerComponent } from './components/entrypoint-container/entrypoint-container.component';
 import { RedirectWrapperComponent } from './components/redirect-wrapper/redirect-wrapper.component';
 import { RedirectContainerComponent } from './components/redirect-container/redirect-container.component';
+import { ChoiceComponent } from './components/choice/choice.component';
+import { NodeComponent } from './components/node/node.component';
+import { ChoiceCollectionComponent } from './components/choice-collection/choice-collection.component';
+import { NodeDisplayComponent } from './components/node-display/node-display.component';
+import { ProjectDownloadComponent } from './components/project-download/project-download.component';
+import { ProjectUploadComponent } from './components/project-upload/project-upload.component';
+import { DataCollectionComponent } from './components/data-collection/data-collection.component';
 
 
 @NgModule({
@@ -47,7 +54,14 @@ import { RedirectContainerComponent } from './components/redirect-container/redi
     EntrypointComponent,
     EntrypointContainerComponent,
     RedirectWrapperComponent,
-    RedirectContainerComponent
+    RedirectContainerComponent,
+    ChoiceComponent,
+    NodeComponent,
+    ChoiceCollectionComponent,
+    NodeDisplayComponent,
+    ProjectDownloadComponent,
+    ProjectUploadComponent,
+    DataCollectionComponent
   ],
   imports: [
     BrowserModule,

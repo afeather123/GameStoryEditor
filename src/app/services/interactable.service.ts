@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/observable';
 import { DialogueNode } from '../models/node';
 import { Subscription } from 'rxjs/Subscription';
 import { EditorNodes } from '../models/editornodes';
+import { LoadJsonService } from './load-json.service';
 
 interface InteractableObject {
   [key: string]: Interactable;
@@ -20,6 +21,8 @@ export class InteractableService {
   addNodeSubscribers: Subject<DialogueNode> = new Subject<DialogueNode>();
   nameChangeListeners: Subject<string> = new Subject<string>();
   deletNodeListeners: Subject<string> = new Subject<string>();
+  jsTreeRequestListener: Subject<string> = new Subject<string>();
+  jsTreeLoadListener: Subject<string> = new Subject<string>();
 
 
   editorNodes: EditorNodes = {
@@ -29,7 +32,12 @@ export class InteractableService {
 
   nodeChangeListeners: Subject<EditorNodes> = new Subject<EditorNodes>();
 
-  constructor() { }
+  constructor(private loadJsonService: LoadJsonService) {
+    loadJsonService.InteractableLoadObservable().subscribe((data: any) => {
+      console.log('is this happening?');
+      this.loadInteractables(data);
+    });
+  }
 
   addInteractable(id: string) {
     const newInteractable = new Interactable();
@@ -76,8 +84,40 @@ export class InteractableService {
     this.nodeChangeListeners.next(this.editorNodes);
   }
 
+  goToNode(id: string) {
+  }
+
   NodeChangeObservable(): Observable<EditorNodes> {
     return this.nodeChangeListeners.asObservable();
   }
 
+  stringifyInteractables(): any {
+    return this.interactables;
+  }
+
+  loadInteractables(data: any) {
+    const loadedInteractables = {};
+    const keys = Object.keys(data);
+    keys.forEach(key => {
+      const interactable = new Interactable(data[key]);
+      loadedInteractables[key] = interactable;
+    });
+    this.interactables = loadedInteractables;
+  }
+
+  FileTreeLoadRequestObservable(): Observable<string> {
+    return this.jsTreeRequestListener.asObservable();
+  }
+
+  requestFileTree() {
+    this.jsTreeRequestListener.next();
+  }
+
+  JSTreeLoadObservable(): Observable<string> {
+    return this.jsTreeLoadListener.asObservable();
+  }
+
+  loadFileTree(fileTree: string) {
+    this.jsTreeLoadListener.next(fileTree);
+  }
 }

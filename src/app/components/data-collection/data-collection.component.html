@@ -1,0 +1,35 @@
+<div class="card">
+  <div class="card-header" role="tab" id="section1HeaderId">
+    <h5 class="mb-0">
+      <a data-toggle="collapse" data-parent="#accordianId" href="#nodeData" aria-expanded="true" aria-controls="nodeData">
+        Data
+        <button class="btn btn-square float-right" (click)="addData($event)">
+          <i class="fa fa-plus"></i>
+        </button>
+      </a>
+    </h5>
+  </div>
+  <div id="nodeData" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
+    <div class="card-body">
+      <div class="row form-inline" *ngFor="let data of nodeData">
+        <div class="form-group col-sm-12">
+          <input type="text" [(ngModel)]="data.name" class="form-control">
+          <select (change)="changeType(data, $event.target.value)" [value]="TypeOf(data)" class="form-control">
+            <option value="boolean">boolean</option>
+            <option value="string">string</option>
+            <option value="number">number</option>
+          </select>
+          <input type="text" *ngIf="TypeOf(data) === 'string'" [(ngModel)]="data.value" class="form-control">
+          <input type="number" *ngIf="TypeOf(data) === 'number'" [(ngModel)]="data.value" class="form-control">
+          <select [value]="data.value.toString()" *ngIf="TypeOf(data) === 'boolean'" (select)="changeBool($event.target.value, data)"
+            class="form-control">
+            <option value="true">True</option>
+            <option value="false">False</option>
+          </select>
+          <button class="btn btn-danger float-right" (click)="deleteData(data)">
+            <i class="fa fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

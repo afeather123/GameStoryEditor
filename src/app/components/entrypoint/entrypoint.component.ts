@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { EntryPoint } from '../../models/entrypoint';
+import { InteractableService } from '../../services/interactable.service';
 
 @Component({
   selector: 'app-entrypoint',
@@ -17,10 +18,18 @@ export class EntrypointComponent implements OnInit {
       conditions: []
     }
   };
+  @Output() deleteEntryPoint: EventEmitter<EntryPoint> = new EventEmitter<EntryPoint>();
 
-  constructor() { }
+  constructor(private interactableService: InteractableService) { }
 
   ngOnInit() {
   }
 
+  editNode (nodeID: string) {
+    this.interactableService.editNode(nodeID);
+  }
+
+  DeleteEntryPoint() {
+    this.deleteEntryPoint.emit(this.entryPoint);
+  }
 }

@@ -9,6 +9,28 @@ export class ScopeVariables {
     boolVars: Variable[] = [];
     boolKeys: string[] = [];
 
+    constructor(data?: any) {
+        if (data !== undefined) {
+            this.vars = data['vars'];
+            this.keys = data['keys'];
+            this.numKeys = data['numKeys'];
+            this.stringKeys = data['stringKeys'];
+            this.boolKeys = data['boolKeys'];
+            for (let i = 0; i < this.numKeys.length; i++) {
+                const index = this.keys.indexOf(this.numKeys[i]);
+                this.numVars[i] = this.vars[index];
+            }
+            for (let i = 0; i < this.stringKeys.length; i++) {
+                const index = this.keys.indexOf(this.stringKeys[i]);
+                this.stringVars[i] = this.vars[index];
+            }
+            for (let i = 0; i < this.boolKeys.length; i++) {
+                const index = this.keys.indexOf(this.boolKeys[i]);
+                this.boolVars[i] = this.vars[index];
+            }
+        }
+    }
+
     addVariable(variable: Variable) {
         const type = typeof variable.value;
         if (type === 'string') {

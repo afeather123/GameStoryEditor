@@ -21,6 +21,14 @@ export class GlobalVarEditorComponent implements OnInit {
   constructor(private variableSelectService: VariableSelectService) { }
 
   ngOnInit() {
+    this.OnLoadVariables();
+    this.variableSelectService.LoadVariablesObservable().subscribe(() => {
+      console.log('working?');
+      this.OnLoadVariables();
+    });
+  }
+
+  OnLoadVariables() {
     this.stringVariables = this.variableSelectService.globalVars.stringVars;
     this.boolVariables = this.variableSelectService.globalVars.boolVars;
     this.numVariables = this.variableSelectService.globalVars.numVars;

@@ -6,16 +6,12 @@ export class ArrayList<T extends ID> {
     keys: string[] = [];
     idCount = 0;
 
-    constructor(array?: T[]) {
-        if (array === undefined) {return; }
-        array.forEach(element => {
-            const id = parseInt(element.id, 10);
-            if (id >= this.idCount) {
-                this.idCount = id + 1;
-            }
-            this.array.push(element);
-            this.keys.push(element.id);
-        });
+    constructor(data?: any) {
+        if (data !== undefined) {
+            this.array = data['array'];
+            this.keys = data['keys'];
+            this.idCount = data['idCount'];
+        }
     }
 
     Add(element: T) {

@@ -14,7 +14,7 @@ import { Condition } from '../../models/condition';
 
 export class NodePreviewComponent implements OnInit {
 
-  currentInteractable: Interactable = new Interactable();
+  currentInteractable: Interactable;
 
   constructor(private interactableService: InteractableService) { }
 
@@ -37,5 +37,9 @@ export class NodePreviewComponent implements OnInit {
 
   renameNode (nodeID: string) {
     this.interactableService.changeNodeName(nodeID);
+  }
+
+  editNode (nodeID: string) {
+    this.interactableService.editNode(nodeID);
   }
  }

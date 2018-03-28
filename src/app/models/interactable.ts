@@ -10,11 +10,21 @@ export class Interactable {
     nodes: ArrayList<DialogueNode> = new ArrayList<DialogueNode>();
     entryPoints: EntryPoint[] = [];
 
+    constructor(data?: any) {
+        if (data !== undefined) {
+            this.nodes = new ArrayList(data['nodes']);
+            this.entryPoints = data['entryPoints'];
+        }
+    }
+
     AddNode (): DialogueNode {
         const newNode: DialogueNode = {
             name: 'node' + this.nodes.idCount.toString(),
             text: 'default',
-            id: 'sasdf'
+            id: 'sasdf',
+            setconditions: [],
+            redirects: [],
+            choices: []
         };
         this.nodes.Add(newNode);
         return newNode;
@@ -31,6 +41,13 @@ export class Interactable {
             }
         };
         this.entryPoints.push(newEntryPoint);
+    }
+
+    DeleteEntryPoint (entryPoint: EntryPoint) {
+        const index = this.entryPoints.indexOf(entryPoint);
+        if (index >= 0) {
+            this.entryPoints.splice(index, 1);
+        }
     }
 
 }

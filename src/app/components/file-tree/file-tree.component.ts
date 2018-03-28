@@ -20,9 +20,13 @@ export class FileTreeComponent implements OnInit {
     private interactableService: InteractableService) { }
 
   ngOnInit() {
+    this.InitializeTree();
     this.loadJsonService.getJSTreeData().subscribe((data: any) => {
       this.coreData = data;
-      this.InitializeTree();
+      this.loadTree(data);
+    });
+    this.interactableService.FileTreeLoadRequestObservable().subscribe(() => {
+      this.interactableService.loadFileTree(this.stringifyTree());
     });
   }
 
@@ -189,7 +193,36 @@ export class FileTreeComponent implements OnInit {
         }
 
       },
-      'core': this.coreData,
+      'core': {
+        'check_callback': true,
+        'data': [
+          {
+            'id': 'j1_1',
+            'text': 'Root node',
+            'icon': true,
+            'li_attr': {
+              'id': 'j1_1'
+            },
+            'a_attr': {
+              'href': '#',
+              'id': 'j1_1_anchor'
+            },
+            'state': {
+              'loaded': true,
+              'opened': true,
+              'selected': false,
+              'disabled': false
+            },
+            'data': {
+
+            },
+            'children': [
+
+            ],
+            'type': 'default'
+          }
+        ]
+      },
       'plugins': [
         'contextmenu', 'types', 'dnd'
       ]
@@ -219,5 +252,17 @@ export class FileTreeComponent implements OnInit {
     $(this.files.nativeElement).on('delete_node.jstree', (e, data) => {
       this.variableSelectService.DeleteScope(data.node.id);
     });
+  }
+
+  loadTree(data: any) {
+    $(this.files.nativeElement).jstree(true).settings.core.data = data;
+    $(this.files.nativeElement).jstree('refresh');
+  }
+
+  stringifyTree(): string {
+    const treeData = $(this.files.nativeElement).jstree().get_json('#',
+    {no_state: true, no_data: true, no_li_attr: true, no_a_attr: true, flat: true});
+    console.log(JSON.stringify(treeData));
+    return treeData;
   }
 }

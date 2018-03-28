@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InteractableService } from '../../services/interactable.service';
 import { Interactable } from '../../models/interactable';
+import { EntryPoint } from '../../models/entrypoint';
 
 @Component({
   selector: 'app-entrypoint-container',
@@ -10,7 +11,7 @@ import { Interactable } from '../../models/interactable';
 export class EntrypointContainerComponent implements OnInit {
 
 
-  currentInteractable: Interactable = new Interactable();
+  currentInteractable: Interactable;
 
   constructor(private interactableService: InteractableService) { }
 
@@ -18,6 +19,10 @@ export class EntrypointContainerComponent implements OnInit {
     this.interactableService.InteractableObservable().subscribe((interactable: Interactable) => {
       this.currentInteractable = interactable;
     });
+  }
+
+  DeleteEntryPoint(entryPoint: EntryPoint) {
+    this.currentInteractable.DeleteEntryPoint(entryPoint);
   }
 
 }

@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { ScopeVariables } from '../models/ScopeVariables';
 import { ArrayList } from '../models/arraylist';
+import { LoadJsonService } from './load-json.service';
 
 interface ScopeVarObject {
   [key: string]: ScopeVariables;
@@ -15,8 +16,11 @@ interface ScopeVarObject {
 @Injectable()
 export class VariableSelectService {
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private loadJsonService: LoadJsonService) {
     this.getJSON().subscribe((data: any) => {this.loadData(data.json().vars); });
+    loadJsonService.VariableLoadObservable().subscribe((data: any) => {
+      this.loadVariables(data);
+    });
   }
 
   allVariables: ArrayList<Variable> = new ArrayList<Variable>();
@@ -24,7 +28,7 @@ export class VariableSelectService {
   // allKeys: string[] = [];
   globalVars: ScopeVariables = new ScopeVariables();
   localVars: ScopeVarObject = {};
-  currentLocalScope: ScopeVariables = new ScopeVariables();
+  currentLocalScope: ScopeVariables = null;
   currentScopeID: string;
 
   varCount = 0;
@@ -32,6 +36,7 @@ export class VariableSelectService {
   private nameChangeListeners = new Subject();
   private deleteVariableListeners = new Subject<string>();
   private localScopeListeners = new Subject<ScopeVariables>();
+  private loadVariablesListeners = new Subject<any>();
 
   getJSON(): Observable<any> {
     return this.http.get('/assets/mock-data.json');
@@ -112,6 +117,9 @@ export class VariableSelectService {
       this.currentLocalScope = null;
       this.localScopeListeners.next(null);
     }
+    if (this.localVars[interactableId] === undefined) {
+      return;
+    }
     const keys = this.localVars[interactableId].keys;
     delete this.localVars[interactableId];
     console.log(keys.length);
@@ -139,6 +147,30 @@ export class VariableSelectService {
     const variable = this.allVariables.GetAtId(id);
     console.log(variable);
     return typeof variable.value;
+  }
+
+  stringifyVariables(): any {
+    const allData = {
+      allVariables: this.allVariables,
+      globalVars: this.globalVars,
+      localVars: this.localVars
+    };
+    return allData;
+  }
+
+  loadVariables(data: any) {
+    this.allVariables = new ArrayList(data['allVariables']);
+    this.globalVars = new ScopeVariables(data['globalVars']);
+    const localVarKeys = Object.keys(data['localVars']);
+    this.localVars = {};
+    localVarKeys.forEach(key => {
+      this.localVars[key] = new ScopeVariables(data['localVars'][key]);
+    });
+    this.loadVariablesListeners.next();
+  }
+
+  LoadVariablesObservable(): Observable<any> {
+    return this.loadVariablesListeners.asObservable();
   }
 }
 

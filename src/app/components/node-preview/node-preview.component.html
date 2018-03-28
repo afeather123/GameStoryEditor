@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" *ngIf="currentInteractable !== null && currentInteractable !== undefined">
     <div class="card-header" role="tab" id="section1HeaderId">
       <h5 class="mb-0">
         <a data-toggle="collapse" data-parent="#accordianId" href="#nodePreview" aria-expanded="true" aria-controls="nodePreview">
@@ -16,11 +16,11 @@
             <div class="card-body">
                 <h5 class="card-title">
                     {{node.name}}
-                    <button class="btn btn-danger float-right" (click)="deleteNode(node)">
+                    <button type="button" class="btn btn-primary float-right" (click)="editNode(node.id)"><i class="fa fa-arrow-right"></i></button>
+                    <button class="btn btn-danger float-right mr-1" (click)="deleteNode(node)">
                         <i class="fa fa-trash"></i>
                     </button>
                 </h5>
-                <input type="text" [(ngModel)]="node.name" (keyup)="this.renameNode(node.id)">
                 <p>{{node.text}}</p>
             </div>
           </div>

@@ -1,0 +1,30 @@
+<div class="card">
+  <div class="card-header" role="tab" id="section1HeaderId">
+    <h5 class="mb-0">
+      <a data-toggle="collapse" data-parent="#accordianId" href="#choice{{id}}" aria-expanded="true" [attr.aria-controls]="'choice' + id">
+        {{truncateString(choice.text)}}
+
+        <div class="dropdown open float-right">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            Options
+          </button>
+          <div class="dropdown-menu" aria-labelledby="triggerId">
+            <button class="dropdown-item" [hidden]="choice.conditions.length <=  0 ? false : true" (click)="addCondition($event, false)">Condition</button>
+            <button class="dropdown-item" [hidden]="choice.setConditions.length <=  0 ? false : true" (click)="addCondition($event, true)">Condition Setter</button>
+            <button class="dropdown-item" (click)="DeleteChoice($event)">Delete</button>
+          </div>
+        </div>
+      </a>
+    </h5>
+  </div>
+  <div id="choice{{id}}" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
+    <div class="card-body">
+      <app-node-select [value]="choice"></app-node-select>
+      <textarea cols="30" rows="10" [(ngModel)]="choice.text"></textarea>
+      <app-condition-collection [conditions]="choice.conditions" *ngIf="choice.conditions !== undefined && choice.conditions !== null && choice.conditions.length > 0"></app-condition-collection>
+      <app-condition-collection [name]="'Set Conditions'" [conditionOperators]="setConditionOperators" [conditions]="choice.setConditions"
+        *ngIf="choice.setConditions !== undefined && choice.setConditions !== null && choice.setConditions.length > 0"></app-condition-collection>
+    </div>
+  </div>
+</div>

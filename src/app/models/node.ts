@@ -8,7 +8,7 @@ export interface DialogueNode extends ID {
     name: string;
     text: string;
     id: string;
-    data?: NodeData;
+    data?: NodeData[];
     setconditions?: Condition[];
     redirects?: Redirect[];
     choices?: Choice[];
