@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InteractableService } from '../../services/interactable.service';
 import { VariableSelectService } from '../../services/variable-select.service';
+import { DownloadService } from '../../services/download.service';
 
 @Component({
   selector: 'app-project-download',
@@ -11,18 +12,23 @@ export class ProjectDownloadComponent implements OnInit {
 
   interactableData: any;
   variableData: any;
+  sentRequest = false;
 
   constructor(private interactableService: InteractableService,
-  private variableSelectService: VariableSelectService
+  private variableSelectService: VariableSelectService,
+  private downloadService: DownloadService
   ) { }
 
   ngOnInit() {
     this.interactableService.JSTreeLoadObservable().subscribe((fileTree: any) => {
-      this.RecieveFileTreeData(fileTree);
+      if (this.sentRequest) {
+        this.RecieveFileTreeData(fileTree);
+      }
     });
   }
 
   DownloadProject() {
+    this.sentRequest = true;
     this.interactableData = this.interactableService.stringifyInteractables();
     this.variableData = this.variableSelectService.stringifyVariables();
     this.interactableService.requestFileTree();
@@ -34,19 +40,7 @@ export class ProjectDownloadComponent implements OnInit {
       variables: this.variableData,
       jstree: fileTree
     };
-    this.download('project.json', JSON.stringify(projectData));
-  }
-
-  download(filename, text) {
-    const element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    element.setAttribute('download', filename);
-
-    element.style.display = 'none';
-    document.body.appendChild(element);
-
-    element.click();
-
-    document.body.removeChild(element);
+    this.downloadService.download('project.json', JSON.stringify(projectData));
+    this.sentRequest = false;
   }
 }

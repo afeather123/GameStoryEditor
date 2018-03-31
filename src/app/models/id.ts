@@ -1,4 +1,4 @@
 export interface ID {
-    name: string;
+    name?: string;
     id: string;
 }

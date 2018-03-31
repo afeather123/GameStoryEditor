@@ -10,7 +10,7 @@
       </h5>
     </div>
     <div id="nodePreview" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
-      <div class="card-body">
+      <div class="card-body node-body">
         <div *ngFor="let node of currentInteractable.nodes.array">
           <div class="card">
             <div class="card-body">
@@ -21,7 +21,7 @@
                         <i class="fa fa-trash"></i>
                     </button>
                 </h5>
-                <p>{{node.text}}</p>
+                <p>{{node.GetPreview()}}</p>
             </div>
           </div>
         </div>

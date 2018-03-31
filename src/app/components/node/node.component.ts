@@ -38,10 +38,13 @@ export class NodeComponent implements OnInit {
     }
     const newChoice: Choice = {
       text: 'default',
-      nodeID: 'none',
+      redirects: [{
+        nodeID: 'none',
+        conditions: []
+      }],
       conditions: [],
       setConditions: []
-    };
+    } as Choice;
     this.node.choices.push(newChoice);
     e.stopPropagation();
   }
@@ -75,6 +78,11 @@ export class NodeComponent implements OnInit {
     e.stopPropagation();
   }
 
+  AddNameLabel() {
+    this.node.name = 'default';
+    this.renameNode();
+  }
+
   AddData(e: Event) {
     const newData: NodeData = {
       name: 'data',
@@ -87,7 +95,29 @@ export class NodeComponent implements OnInit {
     e.stopPropagation();
   }
 
-  renameNode (nodeID: string) {
-    this.interactableService.changeNodeName(nodeID);
+  changeText(e) {
+    if (this.getCaretPosition(e.target).start < DialogueNode.maxNameLength) {
+      this.renameNode();
+    }
   }
+
+  getCaretPosition (ctrl): any {
+    // IE < 9 Support
+    if (ctrl.selectionStart || ctrl.selectionStart === '0') {
+      return {'start': ctrl.selectionStart, 'end': ctrl.selectionEnd };
+    } else {
+      return {'start': 0, 'end': 0};
+    }
+  }
+
+  changeName(e) {
+    if (this.getCaretPosition(e.target).start < DialogueNode.maxNameLength) {
+      this.renameNode();
+    }
+  }
+
+  renameNode () {
+    this.interactableService.changeNodeName(this.node.id);
+  }
+
 }

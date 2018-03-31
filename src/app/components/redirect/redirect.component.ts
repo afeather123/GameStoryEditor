@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Redirect } from '../../models/redirect';
+import { InteractableService } from '../../services/interactable.service';
 
 @Component({
   selector: 'app-redirect',
@@ -15,7 +16,7 @@ export class RedirectComponent implements OnInit {
   };
   @Output() selectNode: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor() { }
+  constructor(private interactableService: InteractableService) { }
 
   ngOnInit() {
   }
@@ -23,6 +24,10 @@ export class RedirectComponent implements OnInit {
   OnChange(nodeID: string) {
     console.log(nodeID);
     this.selectNode.emit(nodeID);
+  }
+
+  goToNode() {
+    this.interactableService.goToNode(this.redirect.nodeID);
   }
 
 }

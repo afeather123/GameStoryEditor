@@ -1,0 +1,6 @@
+.node-body {
+    height: 100%;
+    max-height: 250px;
+    vertical-align: top;
+    overflow-y:scroll;
+}

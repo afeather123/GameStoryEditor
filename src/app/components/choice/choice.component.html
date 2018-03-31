@@ -3,7 +3,7 @@
     <h5 class="mb-0">
       <a data-toggle="collapse" data-parent="#accordianId" href="#choice{{id}}" aria-expanded="true" [attr.aria-controls]="'choice' + id">
         {{truncateString(choice.text)}}
-
+        <app-go-to-button [nodeID]="choice.redirects[0].nodeID" *ngIf="choice.redirects[0] !== 'none' && choice.redirects.length == 1 && choice.redirects[0].conditions.length == 0"></app-go-to-button>
         <div class="dropdown open float-right">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">
@@ -13,6 +13,8 @@
             <button class="dropdown-item" [hidden]="choice.conditions.length <=  0 ? false : true" (click)="addCondition($event, false)">Condition</button>
             <button class="dropdown-item" [hidden]="choice.setConditions.length <=  0 ? false : true" (click)="addCondition($event, true)">Condition Setter</button>
             <button class="dropdown-item" (click)="DeleteChoice($event)">Delete</button>
+            <button class="dropdown-item" (click)="addRedirect($event)" *ngIf="choice.redirects.length == 1">Add Redirects</button>
+            <button class="dropdown-item" (click)="makeSingleRedirect($event)" *ngIf="choice.redirects.length > 1">Make Single Redirect</button>
           </div>
         </div>
       </a>
@@ -20,8 +22,9 @@
   </div>
   <div id="choice{{id}}" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
     <div class="card-body">
-      <app-node-select [value]="choice"></app-node-select>
-      <textarea cols="30" rows="10" [(ngModel)]="choice.text"></textarea>
+      <app-node-select [value]="choice.redirects[0]" *ngIf="choice.redirects.length == 1 && choice.redirects[0].conditions.length == 0"></app-node-select>
+      <textarea cols="30" rows="5" [(ngModel)]="choice.text" class="form-control"></textarea>
+      <app-redirect-container [redirects]="choice.redirects" *ngIf="choice.redirects.length > 1"></app-redirect-container>
       <app-condition-collection [conditions]="choice.conditions" *ngIf="choice.conditions !== undefined && choice.conditions !== null && choice.conditions.length > 0"></app-condition-collection>
       <app-condition-collection [name]="'Set Conditions'" [conditionOperators]="setConditionOperators" [conditions]="choice.setConditions"
         *ngIf="choice.setConditions !== undefined && choice.setConditions !== null && choice.setConditions.length > 0"></app-condition-collection>

@@ -23,7 +23,7 @@ export class NodeSelectComponent implements OnInit, OnDestroy {
   @Output() selectNode: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private interactableService: InteractableService,
-    private changeDetectorRef: ChangeDetectorRef) { }
+  private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.currentInteractable = this.interactableService.currentInteractable;

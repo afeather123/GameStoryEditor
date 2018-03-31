@@ -3,6 +3,10 @@
     <h5 class="mb-0">
       <a data-toggle="collapse" data-parent="#accordianId" href="#redirectWrapper{{id}}" aria-expanded="true" [attr.aria-controls]="'redirectWrapper' + id">
         {{nodeName}}
+        <app-go-to-button [nodeID]="redirect.nodeID" *ngIf="redirect.nodeID !== 'none'"></app-go-to-button>
+        <button class="btn btn-danger float-right" type="submit" (click)="DeleteRedirect()">
+          <i class="fa fa-trash"></i>
+        </button>
       </a>
     </h5>
   </div>

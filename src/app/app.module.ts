@@ -33,6 +33,10 @@ import { NodeDisplayComponent } from './components/node-display/node-display.com
 import { ProjectDownloadComponent } from './components/project-download/project-download.component';
 import { ProjectUploadComponent } from './components/project-upload/project-upload.component';
 import { DataCollectionComponent } from './components/data-collection/data-collection.component';
+import { GoToButtonComponent } from './components/go-to-button/go-to-button.component';
+import { GameFormatComponent } from './components/game-format/game-format.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { DownloadService } from './services/download.service';
 
 
 @NgModule({
@@ -61,7 +65,10 @@ import { DataCollectionComponent } from './components/data-collection/data-colle
     NodeDisplayComponent,
     ProjectDownloadComponent,
     ProjectUploadComponent,
-    DataCollectionComponent
+    DataCollectionComponent,
+    GoToButtonComponent,
+    GameFormatComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -69,7 +76,7 @@ import { DataCollectionComponent } from './components/data-collection/data-colle
     NgSelectModule,
     HttpModule
   ],
-  providers: [VariableSelectService, LoadJsonService, InteractableService],
+  providers: [VariableSelectService, LoadJsonService, InteractableService, DownloadService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

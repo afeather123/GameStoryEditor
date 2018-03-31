@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { EntryPoint } from '../../models/entrypoint';
 import { InteractableService } from '../../services/interactable.service';
+import { VariableSelectService } from '../../services/variable-select.service';
+import { DialogueNode } from '../../models/node';
 
 @Component({
   selector: 'app-entrypoint',
@@ -9,7 +11,7 @@ import { InteractableService } from '../../services/interactable.service';
 })
 export class EntrypointComponent implements OnInit {
 
-
+  node: DialogueNode;
   @Input() entryPoint: EntryPoint = {
     name: 'something',
     id: '0',
@@ -20,9 +22,11 @@ export class EntrypointComponent implements OnInit {
   };
   @Output() deleteEntryPoint: EventEmitter<EntryPoint> = new EventEmitter<EntryPoint>();
 
-  constructor(private interactableService: InteractableService) { }
+  constructor(private interactableService: InteractableService, private variableSelectService: VariableSelectService) {
+   }
 
   ngOnInit() {
+    this.ChangeNode(this.entryPoint.redirect.nodeID);
   }
 
   editNode (nodeID: string) {
@@ -32,4 +36,9 @@ export class EntrypointComponent implements OnInit {
   DeleteEntryPoint() {
     this.deleteEntryPoint.emit(this.entryPoint);
   }
+
+  ChangeNode(e: string) {
+    this.node = this.interactableService.currentInteractable.nodes.GetAtId(e);
+  }
+
 }

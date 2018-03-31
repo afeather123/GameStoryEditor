@@ -8,49 +8,7 @@ import { Choice } from '../../models/choice';
 })
 export class ChoiceCollectionComponent implements OnInit {
 
-  @Input() choices: Choice[] = [{
-    text: 'kill bobby',
-    nodeID: 'none',
-    conditions: [{
-      varID: 'none',
-      value: 0,
-      operator: '='
-    }],
-    setConditions: [{
-        varID: 'none',
-        value: 0,
-        operator: '='
-      }]
-    },
-    {
-      text: 'kill bobby',
-      nodeID: 'none',
-      conditions: [{
-        varID: 'none',
-        value: 0,
-        operator: '='
-      }],
-      setConditions: [{
-        varID: 'none',
-        value: 0,
-        operator: '='
-      }]
-    },
-    {
-      text: 'kill bobby',
-      nodeID: 'none',
-      conditions: [{
-        varID: 'none',
-        value: 0,
-        operator: '='
-      }],
-      setConditions: [{
-        varID: 'none',
-        value: 0,
-        operator: '='
-      }]
-    }];
-
+  @Input() choices: Choice[];
   constructor() { }
 
   ngOnInit() {
@@ -58,11 +16,14 @@ export class ChoiceCollectionComponent implements OnInit {
 
   addChoice(e: Event) {
     const newChoice: Choice = {
-      nodeID: 'none',
+      redirects: [{
+        nodeID: 'none',
+        conditions: []
+      }],
       text: 'default',
       conditions: [],
       setConditions: []
-    };
+    } as Choice;
     this.choices.unshift(newChoice);
     e.stopPropagation();
   }

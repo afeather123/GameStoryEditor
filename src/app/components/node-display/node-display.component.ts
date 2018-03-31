@@ -23,4 +23,8 @@ export class NodeDisplayComponent implements OnInit {
     });
   }
 
+  returnToNode(node: DialogueNode) {
+    this.interactableService.returnToNode(node);
+  }
+
 }

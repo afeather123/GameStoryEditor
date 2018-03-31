@@ -11,5 +11,5 @@
             "id": "1"
         }
     ],
-    "jstree": [{"id":"j1_1","text":"Root node","icon":true,"data":false,"parent":"#","type":"default"},{"id":"j1_3","text":"Bobby","icon":"jstree-file","data":false,"parent":"j1_1","type":"file"},{"id":"j1_4","text":"Sally","icon":"jstree-file","data":false,"parent":"j1_1","type":"file"}]
+    "jstree": [{"id":"j1_1","text":"Root node","icon":true,"data":false,"parent":"#","type":"default"}]
 }

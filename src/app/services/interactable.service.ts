@@ -34,7 +34,6 @@ export class InteractableService {
 
   constructor(private loadJsonService: LoadJsonService) {
     loadJsonService.InteractableLoadObservable().subscribe((data: any) => {
-      console.log('is this happening?');
       this.loadInteractables(data);
     });
   }
@@ -81,10 +80,23 @@ export class InteractableService {
 
   editNode(id: string) {
     this.editorNodes.currentNode = this.currentInteractable.nodes.GetAtId(id);
+    this.editorNodes.nodeTrail = [];
     this.nodeChangeListeners.next(this.editorNodes);
   }
 
   goToNode(id: string) {
+    this.editorNodes.nodeTrail.push(this.editorNodes.currentNode);
+    this.editorNodes.currentNode = this.currentInteractable.nodes.GetAtId(id);
+    this.nodeChangeListeners.next(this.editorNodes);
+  }
+
+  returnToNode(node: DialogueNode) {
+    const index = this.editorNodes.nodeTrail.indexOf(node);
+    if (index >= 0) {
+      this.editorNodes.currentNode = this.editorNodes.nodeTrail[index];
+      this.editorNodes.nodeTrail.splice(index, (this.editorNodes.nodeTrail.length - index));
+    }
+    this.nodeChangeListeners.next(this.editorNodes);
   }
 
   NodeChangeObservable(): Observable<EditorNodes> {

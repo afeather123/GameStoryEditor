@@ -1,7 +1,7 @@
-<form id="jsonFile" name="jsonFile" enctype="multipart/form-data" method="post">
+<a class="dropdown-item" (click)="clickFileInput()" href="#">Upload Project File</a>
+<form id="jsonFile" name="jsonFile" enctype="multipart/form-data" method="post" hidden>
   <fieldset>
-    <h2>Json File</h2>
-     <input type='file' id='fileinput'>
-     <input type='button' id='btnLoad' value='Load' (click)="loadFile()">
+     <input type='file' id='fileinput' class="dropdown-item" #fileInput (change)="selectedFile()">
+     <input type='button' id='btnLoad' value='Load' (click)="loadFile()" #formButton>
   </fieldset>
 </form>

@@ -1,27 +1,26 @@
 <div class="card">
     <div class="card-header" role="tab" id="section1HeaderId">
       <h5 class="mb-0">
-        <a data-toggle="collapse" data-parent="#accordianId" href="#node" aria-expanded="true" aria-controls="node">
-          {{node.name}}
+          {{node.GetName()}}
           <div class="dropdown open float-right">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
                   Options
                 </button>
             <div class="dropdown-menu" aria-labelledby="triggerId">
+              <button class="dropdown-item" (click)="AddNameLabel()" [hidden]="node.choices.length > 0" *ngIf="node.name.length <= 0">Add Name Label</button>
               <button class="dropdown-item" (click)="AddData($event)" [hidden]="node.data !== undefined && node.data.length > 0">Add Data</button>
               <button class="dropdown-item" (click)="AddConditionSetter($event)" [hidden]="node.setconditions.length > 0">Add Condition Setter</button>
-              <button class="dropdown-item" (click)="AddRedirect($event)" [hidden]="node.redirects !== undefined && node.redirects.length > 0">Add Redirect</button>
+              <button class="dropdown-item" (click)="AddRedirect($event)" [hidden]="node.redirects !== undefined && node.redirects.length > 1">Add Conditional Redirects</button>
               <button class="dropdown-item" (click)="AddChoice($event)" [hidden]="node.choices.length > 0">Add Choice</button>
             </div>
           </div>
-        </a>
       </h5>
     </div>
-    <div id="node" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
+    <div>
       <div class="card-body">
-        <input type="text" [(ngModel)]="node.name" (keyup)="renameNode()" class="form-control mb-2">
-        <textarea id="" cols="40" rows="5" [(ngModel)]="node.text" class="form-control mb-2"></textarea>
+        <input type="text" [(ngModel)]="node.name" (keyup)="changeName($event)" class="form-control mb-2" *ngIf="node.name.length > 0">
+        <textarea id="" cols="40" rows="5" [(ngModel)]="node.text" class="form-control mb-2" (keyup)="changeText($event)"></textarea>
         <app-data-collection [nodeData]="node.data" *ngIf="node.data !== undefined && node.data.length > 0"></app-data-collection>
         <app-condition-collection [conditionOperators]="setConditionOperators" [name]="'Set Conditions'" [conditions]="node.setconditions" *ngIf="node.setconditions != null && node.setconditions != undefined && node.setconditions.length > 0"></app-condition-collection>
         <app-redirect-container [redirects]="node.redirects" *ngIf="node.redirects !== null && node.redirects !== undefined && node.redirects.length > 0"></app-redirect-container>

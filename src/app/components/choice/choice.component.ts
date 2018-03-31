@@ -3,6 +3,8 @@ import { Choice } from '../../models/choice';
 import { ConditionOperators } from '../../models/ConditionOperators';
 import { Condition } from '../../models/condition';
 import { NodeID } from '../../models/nodeID';
+import { Redirect } from '../../models/redirect';
+import { NodeComponent } from '../node/node.component';
 
 @Component({
   selector: 'app-choice',
@@ -14,19 +16,14 @@ export class ChoiceComponent implements OnInit {
   static idCount = 0;
   static maxNameLength = 20;
   @Input() choice: Choice = {
-    text: 'kill bobby',
-    nodeID: 'none',
-    conditions: [{
-      varID: 'none',
-      value: 0,
-      operator: '='
+    text: 'default',
+    redirects: [{
+      nodeID: 'none',
+      conditions: []
     }],
-    setConditions: [{
-      varID: 'none',
-      value: 0,
-      operator: '='
-    }]
-  };
+    setConditions: [],
+    conditions: []
+  } as Choice;
   id: number;
   @Output() deleteChoice: EventEmitter<Choice> = new EventEmitter<Choice>();
 
@@ -60,6 +57,27 @@ export class ChoiceComponent implements OnInit {
       }
       this.choice.setConditions.unshift(newCondition);
     }
+    e.stopPropagation();
+  }
+
+  addRedirect(e: Event) {
+    const newRedirect: Redirect = {
+      nodeID: 'none',
+      conditions: [{
+        varID: 'none',
+        value: 0,
+        operator: '='
+      }]
+    };
+    this.choice.redirects.push(newRedirect);
+    e.stopPropagation();
+  }
+
+  makeSingleRedirect(e: Event) {
+    if (this.choice.redirects.length > 1) {
+      this.choice.redirects = [this.choice.redirects[0]];
+    }
+    this.choice.redirects[0].conditions = [];
     e.stopPropagation();
   }
 

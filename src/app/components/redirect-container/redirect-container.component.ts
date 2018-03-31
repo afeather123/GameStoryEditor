@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Redirect } from '../../models/redirect';
 import { NodeID } from '../../models/nodeID';
+import { InteractableService } from '../../services/interactable.service';
 
 @Component({
   selector: 'app-redirect-container',
@@ -13,7 +14,7 @@ export class RedirectContainerComponent implements OnInit {
   id;
   @Input() redirects: Redirect[] = [];
 
-  constructor() { }
+  constructor(private interactableService: InteractableService) { }
 
   ngOnInit() {
     this.id = RedirectContainerComponent.idCount++;
@@ -27,4 +28,15 @@ export class RedirectContainerComponent implements OnInit {
     this.redirects.push(newRedirect);
   }
 
+  DeleteRedirect(redirect: Redirect) {
+    const index = this.redirects.indexOf(redirect);
+    if (index >= 0) {
+      this.redirects.splice(index, 1);
+    }
+  }
+
+  AddNewNodeToRedirect() {
+    const newNode = this.interactableService.currentInteractable.AddNode();
+    this.redirects[0].nodeID = newNode.id;
+  }
 }

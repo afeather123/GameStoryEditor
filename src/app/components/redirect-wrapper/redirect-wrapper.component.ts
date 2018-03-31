@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Redirect } from '../../models/redirect';
 import { InteractableService } from '../../services/interactable.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -17,6 +17,7 @@ export class RedirectWrapperComponent implements OnInit, OnDestroy {
     nodeID: 'none',
     conditions: []
   };
+  @Output() deleteRedirect: EventEmitter<Redirect> = new EventEmitter<Redirect>();
 
   nameChangeSubscription: Subscription;
   deleteNodeSubscription: Subscription;
@@ -54,5 +55,9 @@ export class RedirectWrapperComponent implements OnInit, OnDestroy {
     } else {
       this.nodeName = 'No node selected';
     }
+  }
+
+  DeleteRedirect() {
+    this.deleteRedirect.emit(this.redirect);
   }
 }

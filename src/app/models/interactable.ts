@@ -11,21 +11,31 @@ export class Interactable {
     entryPoints: EntryPoint[] = [];
 
     constructor(data?: any) {
+        const newNodes: DialogueNode[] = [];
         if (data !== undefined) {
+            data['nodes']['array'].forEach(node => {
+                const loadedNode = new DialogueNode(node);
+                newNodes.push(loadedNode);
+            });
+            data['nodes']['array'] = newNodes;
             this.nodes = new ArrayList(data['nodes']);
             this.entryPoints = data['entryPoints'];
         }
     }
 
     AddNode (): DialogueNode {
-        const newNode: DialogueNode = {
-            name: 'node' + this.nodes.idCount.toString(),
-            text: 'default',
+        const newNodeData: any = {
+            name: '',
+            text: 'node' + this.nodes.idCount.toString(),
             id: 'sasdf',
             setconditions: [],
-            redirects: [],
+            redirects: [{
+                nodeID: 'none',
+                conditions: []
+            }],
             choices: []
         };
+        const newNode = new DialogueNode(newNodeData);
         this.nodes.Add(newNode);
         return newNode;
     }
