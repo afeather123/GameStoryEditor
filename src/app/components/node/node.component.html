@@ -24,6 +24,6 @@
         <app-data-collection [nodeData]="node.data" *ngIf="node.data !== undefined && node.data.length > 0"></app-data-collection>
         <app-condition-collection [conditionOperators]="setConditionOperators" [name]="'Set Conditions'" [conditions]="node.setconditions" *ngIf="node.setconditions != null && node.setconditions != undefined && node.setconditions.length > 0"></app-condition-collection>
         <app-redirect-container [redirects]="node.redirects" *ngIf="node.redirects !== null && node.redirects !== undefined && node.redirects.length > 0"></app-redirect-container>
-        <app-choice-collection [choices]="node.choices" *ngIf="node.choices !== null && node.choices !== undefined && node.choices.length > 0"></app-choice-collection>
+        <app-choice-collection (deleteLastChoice)="deleteLastChoice()" [choices]="node.choices" *ngIf="node.choices !== null && node.choices !== undefined && node.choices.length > 0"></app-choice-collection>
       </div>
 </div>

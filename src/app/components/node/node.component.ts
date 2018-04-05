@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { DialogueNode } from '../../models/node';
 import { Condition } from '../../models/condition';
 import { Choice } from '../../models/choice';
@@ -26,6 +26,7 @@ export class NodeComponent implements OnInit {
   constructor(private interactableService: InteractableService) { }
 
   ngOnInit() {
+    console.log('happening?');
   }
 
   AddChoice(e: Event) {
@@ -49,7 +50,7 @@ export class NodeComponent implements OnInit {
     e.stopPropagation();
   }
 
-  AddRedirect(e: Event) {
+  AddRedirect() {
     if (this.node.choices.length > 0) {
       if (!confirm('A node can only have redirects or choices. Are you sure you want to delete the choices currently on the node?')) {
         return;
@@ -65,7 +66,6 @@ export class NodeComponent implements OnInit {
       conditions: []
     };
     this.node.redirects.push(newRedirect);
-    e.stopPropagation();
   }
 
   AddConditionSetter(e: Event) {
@@ -118,6 +118,10 @@ export class NodeComponent implements OnInit {
 
   renameNode () {
     this.interactableService.changeNodeName(this.node.id);
+  }
+
+  deleteLastChoice() {
+    this.AddRedirect();
   }
 
 }

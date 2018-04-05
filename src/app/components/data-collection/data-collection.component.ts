@@ -1,5 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, AfterViewInit } from '@angular/core';
 import { NodeData } from '../../models/nodeData';
+import { DataSetting } from '../../models/DataSetting';
+import { InteractableService } from '../../services/interactable.service';
+import { GlobalDataSettings } from '../../models/globalDataSettings';
+
+declare var $: any;
 
 @Component({
   selector: 'app-data-collection',
@@ -9,11 +14,15 @@ import { NodeData } from '../../models/nodeData';
 export class DataCollectionComponent implements OnInit {
 
   @Input() nodeData: NodeData[] = [];
+  dataSettings: GlobalDataSettings;
 
-  constructor() { }
+  constructor(private _interactableService: InteractableService) { }
 
   ngOnInit() {
+    this.dataSettings = this._interactableService.dataSettings;
+    $('.searchableSelect').select2();
   }
+
 
   changeType(data: NodeData,  type: string) {
     console.log('HAPPENING?');
@@ -47,6 +56,9 @@ export class DataCollectionComponent implements OnInit {
       name: 'data',
       value: 'default'
     };
+    if (this.dataSettings.settings.length > 0) {
+      newData.name = this.dataSettings.settings[0].name;
+    }
     this.nodeData.unshift(newData);
     e.stopPropagation();
   }
@@ -58,4 +70,17 @@ export class DataCollectionComponent implements OnInit {
     }
   }
 
+  getSetting(settingName: string): DataSetting {
+    let thisSetting: DataSetting;
+    this.dataSettings.settings.forEach(setting => {
+      if (setting.name === settingName) {
+        thisSetting = setting;
+      }
+    });
+    return thisSetting;
+  }
+
+  changeDataName(data: NodeData, newName: string) {
+    data.name = newName;
+  }
 }

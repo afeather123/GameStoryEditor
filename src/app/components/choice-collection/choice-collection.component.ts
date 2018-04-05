@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Choice } from '../../models/choice';
 
 @Component({
@@ -7,6 +7,8 @@ import { Choice } from '../../models/choice';
   styleUrls: ['./choice-collection.component.css']
 })
 export class ChoiceCollectionComponent implements OnInit {
+
+  @Output() deleteLastChoice: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Input() choices: Choice[];
   constructor() { }
@@ -29,6 +31,9 @@ export class ChoiceCollectionComponent implements OnInit {
   }
 
   deleteChoice(choice: Choice) {
+    if (this.choices.length === 1) {
+      this.deleteLastChoice.emit();
+    }
     const index = this.choices.indexOf(choice);
     if (index >= 0) {
       this.choices.splice(index, 1);

@@ -12,23 +12,65 @@
   <div id="nodeData" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
     <div class="card-body">
       <div class="row form-inline" *ngFor="let data of nodeData">
-        <div class="form-group col-sm-12">
-          <input type="text" [(ngModel)]="data.name" class="form-control">
-          <select (change)="changeType(data, $event.target.value)" [value]="TypeOf(data)" class="form-control">
-            <option value="boolean">boolean</option>
-            <option value="string">string</option>
-            <option value="number">number</option>
-          </select>
-          <input type="text" *ngIf="TypeOf(data) === 'string'" [(ngModel)]="data.value" class="form-control">
-          <input type="number" *ngIf="TypeOf(data) === 'number'" [(ngModel)]="data.value" class="form-control">
-          <select [value]="data.value.toString()" *ngIf="TypeOf(data) === 'boolean'" (select)="changeBool($event.target.value, data)"
-            class="form-control">
-            <option value="true">True</option>
-            <option value="false">False</option>
-          </select>
-          <button class="btn btn-danger float-right" (click)="deleteData(data)">
-            <i class="fa fa-trash"></i>
-          </button>
+        <div *ngIf="dataSettings.settings.length === 0">
+          <div class="form-group col-sm-12">
+            <input type="text" [(ngModel)]="data.name" class="form-control">
+            <select (change)="changeType(data, $event.target.value)" [value]="TypeOf(data)" class="form-control">
+              <option value="boolean">boolean</option>
+              <option value="string">string</option>
+              <option value="number">number</option>
+            </select>
+            <input type="text" *ngIf="TypeOf(data) === 'string'" [(ngModel)]="data.value" class="form-control">
+            <input type="number" *ngIf="TypeOf(data) === 'number'" [(ngModel)]="data.value" class="form-control">
+            <select [value]="data.value.toString()" *ngIf="TypeOf(data) === 'boolean'" (change)="changeBool($event.target.value, data)"
+              class="form-control">
+              <option value="true">True</option>
+              <option value="false">False</option>
+            </select>
+            <button class="btn btn-danger float-right" (click)="deleteData(data)">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div *ngIf="dataSettings.settings.length > 0">
+          <div *ngIf="getSetting(data.name) !== undefined" class="form-inline">
+            <app-select2 [data]="data" [propertyName]="'name'" [options]="dataSettings.getSettingsNames(true)"></app-select2>
+            <div *ngIf="getSetting(data.name) !== null && getSetting(data.name) !== undefined">
+              <div class="form-group">
+                <input type="number" [(ngModel)]="data.value" *ngIf="getSetting(data.name).type === 'number'" class="form-control">
+                <select [value]="data.value.toString()" *ngIf="getSetting(data.name).type === 'boolean'" (change)="changeBool($event.target.value, data)"
+                  class="form-control">
+                  <option value="true">True</option>
+                  <option value="false">False</option>
+                </select>
+                <app-select2 [data]="data" [propertyName]="'value'" [options]="getSetting(data.name).getOptionsArray()" *ngIf="getSetting(data.name).type === 'string'"></app-select2>
+              </div>
+            </div>
+            <button class="btn btn-danger float-right" (click)="deleteData(data)">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+          <div *ngIf="getSetting(data.name) === undefined" class="form-inline">
+              <app-select2 [data]="data" [propertyName]="'name'" [options]="dataSettings.getSettingsNames(true)" [overrideInitial]="'Custom'"></app-select2>
+              <div *ngIf="data.name !== 'None Selected'">
+                  <input type="text" [(ngModel)]="data.name" class="form-control">
+                  <select (change)="changeType(data, $event.target.value)" [value]="TypeOf(data)" class="form-control">
+                    <option value="boolean">boolean</option>
+                    <option value="string">string</option>
+                    <option value="number">number</option>
+                  </select>
+                  <input type="text" *ngIf="TypeOf(data) === 'string'" [(ngModel)]="data.value" class="form-control">
+                  <input type="number" *ngIf="TypeOf(data) === 'number'" [(ngModel)]="data.value" class="form-control">
+                  <select [value]="data.value.toString()" *ngIf="TypeOf(data) === 'boolean'" (change)="changeBool($event.target.value, data)"
+                    class="form-control">
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                  </select>
+                  <button class="btn btn-danger float-right" (click)="deleteData(data)">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+          </div>
         </div>
       </div>
     </div>

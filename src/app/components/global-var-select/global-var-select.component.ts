@@ -42,6 +42,7 @@ export class GlobalVarSelectComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.nameChangeSubscription.unsubscribe();
+    this.deleteVarSubscription.unsubscribe();
   }
 
   OnAddVariable(variable: Variable) {

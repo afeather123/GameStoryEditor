@@ -1,0 +1,14 @@
+<div class="container">
+  <h3 class="mt-3">Auto-Add</h3>
+  <app-select2 [options]="dataSettings.getSettingsNames(false)"
+  [data]= "dataSettings"
+  [propertyName]="'presets'"
+  [multiple]="true"
+  [width]="'1000px'"
+  ></app-select2>
+  <div class="form-inline mb-3 mt-3">
+    <input type="text" placeholder="Data name..." [(ngModel)]="dataName" class="form-control mr-2">
+    <button (click)="AddSetting()" class="btn btn-primary">Add</button>
+  </div>
+  <app-data-options (deleteSetting)="DeleteSetting($event)" [dataSetting]="setting" *ngFor="let setting of dataSettings.settings"></app-data-options>
+</div>

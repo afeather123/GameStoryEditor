@@ -5,10 +5,13 @@ import { ArrayList } from './arraylist';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/observable';
 import { EntryPoint } from './entrypoint';
+import { GlobalDataSettings } from './globalDataSettings';
+import { NodeData } from './nodeData';
 
 export class Interactable {
     nodes: ArrayList<DialogueNode> = new ArrayList<DialogueNode>();
     entryPoints: EntryPoint[] = [];
+    dataSettings: GlobalDataSettings;
 
     constructor(data?: any) {
         const newNodes: DialogueNode[] = [];
@@ -35,6 +38,17 @@ export class Interactable {
             }],
             choices: []
         };
+        if (this.dataSettings.presets.length > 0) {
+            const data: NodeData[] = [];
+            this.dataSettings.presets.forEach(preset => {
+                const datum: NodeData = {
+                    name: preset,
+                    value: ''
+                };
+                data.push(datum);
+            });
+            newNodeData.data = data;
+        }
         const newNode = new DialogueNode(newNodeData);
         this.nodes.Add(newNode);
         return newNode;

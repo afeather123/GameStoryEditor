@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, Input, Output, EventEmitter, ViewChild, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, Input, Output, EventEmitter, ViewChild, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
 import { Variable } from '../../models/variable';
 import { Condition } from '../../models/condition';
 import { Subscription } from 'rxjs/Subscription';
@@ -12,7 +12,7 @@ declare var $: any;
   templateUrl: './local-var-select.component.html',
   styleUrls: ['./local-var-select.component.css']
 })
-export class LocalVarSelectComponent implements OnInit, OnDestroy {
+export class LocalVarSelectComponent implements OnInit, OnDestroy, OnChanges {
 
   globalVariables: Variable[] = [];
   localScopeVariables: Variable[] = [];
@@ -45,9 +45,14 @@ export class LocalVarSelectComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngOnChanges(changes) {
+    console.log(changes);
+  }
+
   ngOnDestroy() {
     this.nameChangeSubscription.unsubscribe();
     this.scopeChangeSubscription.unsubscribe();
+    this.deleteVarSubscription.unsubscribe();
   }
 
   OnAddVariable(variable: Variable) {

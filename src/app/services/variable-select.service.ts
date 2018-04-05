@@ -145,8 +145,11 @@ export class VariableSelectService {
 
   CheckVariableType(id: string): string {
     const variable = this.allVariables.GetAtId(id);
-    console.log(variable);
-    return typeof variable.value;
+    if (variable !== null) {
+      return typeof variable.value;
+    } else {
+      return 'none';
+    }
   }
 
   stringifyVariables(): any {

@@ -20,27 +20,10 @@ export class ProjectDownloadComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.interactableService.JSTreeLoadObservable().subscribe((fileTree: any) => {
-      if (this.sentRequest) {
-        this.RecieveFileTreeData(fileTree);
-      }
-    });
   }
 
   DownloadProject() {
-    this.sentRequest = true;
-    this.interactableData = this.interactableService.stringifyInteractables();
-    this.variableData = this.variableSelectService.stringifyVariables();
-    this.interactableService.requestFileTree();
+    this.downloadService.DownloadProject(true);
   }
 
-  RecieveFileTreeData(fileTree: any) {
-    const projectData = {
-      interactables: this.interactableData,
-      variables: this.variableData,
-      jstree: fileTree
-    };
-    this.downloadService.download('project.json', JSON.stringify(projectData));
-    this.sentRequest = false;
-  }
 }

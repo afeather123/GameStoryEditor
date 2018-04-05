@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angu
 import { Redirect } from '../../models/redirect';
 import { InteractableService } from '../../services/interactable.service';
 import { Subscription } from 'rxjs/Subscription';
+import { DialogueNode } from '../../models/node';
 
 @Component({
   selector: 'app-redirect-wrapper',
@@ -13,6 +14,7 @@ export class RedirectWrapperComponent implements OnInit, OnDestroy {
   static idCount = 0;
   id: number;
   nodeName: string;
+  selectedNode: DialogueNode;
   @Input() redirect: Redirect = {
     nodeID: 'none',
     conditions: []
@@ -46,15 +48,10 @@ export class RedirectWrapperComponent implements OnInit, OnDestroy {
 
   GetNodeName(nodeID: string) {
     if (nodeID === 'none') {
-      this.nodeName = 'No node selected';
+      this.selectedNode = null;
       return;
     }
-    const node = this.interactableService.currentInteractable.nodes.GetAtId(nodeID);
-    if (node != null) {
-      this.nodeName = node.name;
-    } else {
-      this.nodeName = 'No node selected';
-    }
+    this.selectedNode = this.interactableService.currentInteractable.nodes.GetAtId(nodeID);
   }
 
   DeleteRedirect() {

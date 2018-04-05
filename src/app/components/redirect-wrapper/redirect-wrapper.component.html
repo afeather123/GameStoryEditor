@@ -2,7 +2,8 @@
   <div class="card-header" role="tab" id="section1HeaderId">
     <h5 class="mb-0">
       <a data-toggle="collapse" data-parent="#accordianId" href="#redirectWrapper{{id}}" aria-expanded="true" [attr.aria-controls]="'redirectWrapper' + id">
-        {{nodeName}}
+         <span *ngIf="selectedNode === null">No node selected</span>
+         <span *ngIf="selectedNode !== null">{{selectedNode.GetName()}}</span>
         <app-go-to-button [nodeID]="redirect.nodeID" *ngIf="redirect.nodeID !== 'none'"></app-go-to-button>
         <button class="btn btn-danger float-right" type="submit" (click)="DeleteRedirect()">
           <i class="fa fa-trash"></i>

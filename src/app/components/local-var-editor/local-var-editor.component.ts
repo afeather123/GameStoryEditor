@@ -1,7 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Variable } from '../../models/variable';
 import { VariableSelectService } from '../../services/variable-select.service';
 import { ScopeVariables } from '../../models/ScopeVariables';
+import { Subscription } from 'rxjs/Subscription';
 
 declare var $: any;
 
@@ -10,18 +11,24 @@ declare var $: any;
   templateUrl: './local-var-editor.component.html',
   styleUrls: ['./local-var-editor.component.css']
 })
-export class LocalVarEditorComponent implements OnInit {
+export class LocalVarEditorComponent implements OnInit, OnDestroy {
 
   currentScope: ScopeVariables;
   @ViewChild('stringVars') stringVars: ElementRef;
   @ViewChild('boolVars') boolVars: ElementRef;
   @ViewChild('numVars') numVars: ElementRef;
+  subscription: Subscription;
 
   constructor(private variableSelectService: VariableSelectService, private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.currentScope = this.variableSelectService.currentLocalScope;
-    this.variableSelectService.LocalScopeObservable().subscribe((scopeVars: ScopeVariables) => {this.OnScopeChange(scopeVars); });
+    this.subscription = this.variableSelectService.LocalScopeObservable().subscribe((scopeVars: ScopeVariables) => {
+      this.OnScopeChange(scopeVars); });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   addVariable(e: Event, type: string) {

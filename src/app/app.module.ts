@@ -2,11 +2,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-
+import {FusejsModule} from 'angular-fusejs';
 
 import { AppComponent } from './app.component';
 import { MainEditorComponent } from './components/main-editor/main-editor.component';
-import { NgSelectModule } from '@ng-select/ng-select';
 import { VariableSelectService } from './services/variable-select.service';
 import { GlobalVarSelectComponent } from './components/global-var-select/global-var-select.component';
 import { VariableNameComponent } from './components/variable-name/variable-name.component';
@@ -37,6 +36,12 @@ import { GoToButtonComponent } from './components/go-to-button/go-to-button.comp
 import { GameFormatComponent } from './components/game-format/game-format.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { DownloadService } from './services/download.service';
+import { AppRoutingModule } from './app-routing/app-routing.module';
+import { DataSetupComponent } from './components/data-setup/data-setup.component';
+import { DataOptionsComponent } from './components/data-options/data-options.component';
+import { DataWSettingEditorComponent } from './components/data-w-setting-editor/data-w-setting-editor.component';
+import { SelectModule } from 'ng2-select';
+import { Select2MultipleComponent } from './components/select2-multiple/select2-multiple.component';
 
 
 @NgModule({
@@ -68,13 +73,19 @@ import { DownloadService } from './services/download.service';
     DataCollectionComponent,
     GoToButtonComponent,
     GameFormatComponent,
-    NavbarComponent
+    NavbarComponent,
+    DataSetupComponent,
+    DataOptionsComponent,
+    DataWSettingEditorComponent,
+    Select2MultipleComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    NgSelectModule,
-    HttpModule
+    HttpModule,
+    FusejsModule,
+    AppRoutingModule,
+    SelectModule
   ],
   providers: [VariableSelectService, LoadJsonService, InteractableService, DownloadService],
   bootstrap: [AppComponent]

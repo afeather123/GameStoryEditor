@@ -6,6 +6,8 @@ import { DialogueNode } from '../models/node';
 import { Subscription } from 'rxjs/Subscription';
 import { EditorNodes } from '../models/editornodes';
 import { LoadJsonService } from './load-json.service';
+import { DataSetting } from '../models/DataSetting';
+import { GlobalDataSettings } from '../models/globalDataSettings';
 
 interface InteractableObject {
   [key: string]: Interactable;
@@ -16,6 +18,8 @@ export class InteractableService {
 
   interactables: InteractableObject = {};
   currentInteractable: Interactable;
+  dataSettings: GlobalDataSettings =  new GlobalDataSettings();
+  jsTreeData: any;
 
   interactableSubscribers: Subject<Interactable> = new Subject<Interactable>();
   addNodeSubscribers: Subject<DialogueNode> = new Subject<DialogueNode>();
@@ -36,10 +40,17 @@ export class InteractableService {
     loadJsonService.InteractableLoadObservable().subscribe((data: any) => {
       this.loadInteractables(data);
     });
+    loadJsonService.DattaSettingsLoadObservable().subscribe((data: any) => {
+      const loadedSettings = new GlobalDataSettings();
+      loadedSettings.presets = data.presets;
+      loadedSettings.settings = data.settings;
+      this.dataSettings = loadedSettings;
+    });
   }
 
   addInteractable(id: string) {
     const newInteractable = new Interactable();
+    newInteractable.dataSettings = this.dataSettings;
     this.interactables[id] = newInteractable;
   }
 
@@ -103,7 +114,7 @@ export class InteractableService {
     return this.nodeChangeListeners.asObservable();
   }
 
-  stringifyInteractables(): any {
+  getInteractables(): any {
     return this.interactables;
   }
 
@@ -131,5 +142,9 @@ export class InteractableService {
 
   loadFileTree(fileTree: string) {
     this.jsTreeLoadListener.next(fileTree);
+  }
+
+  updateFileTree(fileTree: any) {
+    this.jsTreeData = fileTree;
   }
 }

@@ -1,3 +1,3 @@
-<select #select>
-  <option [value]="option.id" *ngFor="let option of options">{{option.name}}</option>
+<select #select [multiple]="multiple ? 'multiple' : ''" [ngStyle]="(width !== undefined) ? {'width': width} : {}">
+  <option [value]="option" *ngFor="let option of options">{{option}}</option>
 </select>

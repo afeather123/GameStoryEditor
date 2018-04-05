@@ -1,7 +1,16 @@
-<div class="card" *ngFor="let node of editorNodes.nodeTrail">
-    <h5 class="card-header bg-secondary">{{node.GetName()}}
-        <button type="button" class="btn btn-primary float-right" (click)="returnToNode(node)"><i class="fa fa-arrow-left"></i></button>
-    </h5>
-    
+<div class="node-body outer">
+  <div class="inner">
+    <div class="card" *ngFor="let node of editorNodes.nodeTrail">
+      <h5 class="card-header bg-secondary">{{node.GetName()}}
+        <button type="button" class="btn btn-primary float-right" (click)="returnToNode(node)">
+          <i class="fa fa-arrow-left"></i>
+        </button>
+      </h5>
+
+    </div>
+    <div #mainNode>
+      <app-node [node]="editorNodes.currentNode" *ngIf="editorNodes.currentNode !== null && editorNodes.currentNode !== undefined"></app-node>
+    </div>
+    <div class="space-taker"></div>
+  </div>
 </div>
-<app-node [node]="editorNodes.currentNode" *ngIf="editorNodes.currentNode !== null && editorNodes.currentNode !== undefined"></app-node>

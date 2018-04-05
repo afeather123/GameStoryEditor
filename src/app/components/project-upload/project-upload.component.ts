@@ -19,7 +19,7 @@ export class ProjectUploadComponent implements OnInit {
   }
 
   loadFile() {
-    let input, file, fr;
+    let input, file;
     if (typeof FileReader !== 'function') {
       alert('The file API isn\'t supported on this browser yet.');
       return;
@@ -34,20 +34,8 @@ export class ProjectUploadComponent implements OnInit {
       alert('Please select a file before clicking \'Load\'');
     } else {
       file = input.files[0];
-      this.downloadService.ChangeFileName(file.name.substr(0, file.name.length - 5));
-      fr = new FileReader();
-      fr.onload = this.recievedText();
-      fr.readAsText(file);
+      this.loadJsonService.loadFile(file);
     }
-  }
-
-  recievedText() {
-    return (e) => {
-      console.log(e);
-      const lines = e.target.result;
-      const newArr = JSON.parse(lines);
-      this.loadJsonService.uploadProject(newArr);
-    };
   }
 
   clickFileInput() {

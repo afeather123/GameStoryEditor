@@ -1,0 +1,33 @@
+<div class="card">
+  <div class="card-header" role="tab" id="section1HeaderId">
+    <h5 class="mb-0">
+      <a data-toggle="collapse" data-parent="#accordianId" href="#dataoptions{{id}}" aria-expanded="true" [attr.aria-controls]="'dataoptions' + id">
+        {{dataSetting.name}}
+      </a>
+      <button class="btn btn-danger float-right" (click)="DeleteSetting()">
+          <i class="fa fa-trash"></i>
+      </button>
+    </h5>
+  </div>
+  <div id="dataoptions{{id}}" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
+    <div class="card-body">
+      <div class="row form-inline mb-2">
+          <label class="mr-2">Type: </label>
+          <select (change)="ChangeType($event)" class="form-control mr-2">
+            <option value="string">string</option>
+            <option value="boolean">boolean</option>
+            <option value="number">number</option>
+          </select>
+          <div *ngIf="dataSetting.type === 'string' " (submit)="AddOption($event)">
+            <input type="text" placeholder="New option" [(ngModel)]="optionName" *ngIf="dataSetting.type === 'string'" class="form-control mr-2">
+            <button (click)="AddOption()" class="btn btn-primary">Add</button>
+          </div>
+      </div>
+      <div *ngIf="dataSetting.options != null">
+        <div class="row" *ngFor="let option of dataSetting.options">
+          <input type="text" *ngIf="dataSetting.type === 'string'" [(ngModel)]="option.option" class="form-control mb-2">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

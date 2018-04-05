@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { VariableSelectService } from '../../services/variable-select.service';
 import { Variable } from '../../models/variable';
+import { Subscription } from 'rxjs/Subscription';
 
 declare var $: any;
 
@@ -9,7 +10,7 @@ declare var $: any;
   templateUrl: './global-var-editor.component.html',
   styleUrls: ['./global-var-editor.component.css']
 })
-export class GlobalVarEditorComponent implements OnInit {
+export class GlobalVarEditorComponent implements OnInit, OnDestroy {
 
   stringVariables: Variable[];
   boolVariables: Variable[];
@@ -17,15 +18,20 @@ export class GlobalVarEditorComponent implements OnInit {
   @ViewChild('stringVars') stringVars: ElementRef;
   @ViewChild('boolVars') boolVars: ElementRef;
   @ViewChild('numVars') numVars: ElementRef;
+  subscription: Subscription;
 
   constructor(private variableSelectService: VariableSelectService) { }
 
   ngOnInit() {
     this.OnLoadVariables();
-    this.variableSelectService.LoadVariablesObservable().subscribe(() => {
+    this.subscription = this.variableSelectService.LoadVariablesObservable().subscribe(() => {
       console.log('working?');
       this.OnLoadVariables();
     });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   OnLoadVariables() {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { InteractableService } from '../../services/interactable.service';
 import { Interactable } from '../../models/interactable';
 import { Subscription } from 'rxjs/Subscription';
@@ -11,7 +11,7 @@ declare var $: any;
   templateUrl: './node-select.component.html',
   styleUrls: ['./node-select.component.css']
 })
-export class NodeSelectComponent implements OnInit, OnDestroy {
+export class NodeSelectComponent implements OnInit, OnDestroy, OnChanges {
 
   currentInteractable: Interactable = new Interactable();
   interactableSubscription: Subscription;
@@ -47,6 +47,10 @@ export class NodeSelectComponent implements OnInit, OnDestroy {
       }
     });
     $(this.select.nativeElement).bind('change', (e) => {this.OnChange(e); });
+  }
+
+  ngOnChanges(changes) {
+    setTimeout(() => {$(this.select.nativeElement).select2(); }, 2 );
   }
 
   ngOnDestroy() {
