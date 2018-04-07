@@ -8,6 +8,7 @@ import { EditorNodes } from '../models/editornodes';
 import { LoadJsonService } from './load-json.service';
 import { DataSetting } from '../models/DataSetting';
 import { GlobalDataSettings } from '../models/globalDataSettings';
+import { VariableSelectService } from './variable-select.service';
 
 interface InteractableObject {
   [key: string]: Interactable;
@@ -36,7 +37,7 @@ export class InteractableService {
 
   nodeChangeListeners: Subject<EditorNodes> = new Subject<EditorNodes>();
 
-  constructor(private loadJsonService: LoadJsonService) {
+  constructor(private loadJsonService: LoadJsonService, private _variableSelectService: VariableSelectService) {
     loadJsonService.InteractableLoadObservable().subscribe((data: any) => {
       this.loadInteractables(data);
     });
@@ -122,7 +123,7 @@ export class InteractableService {
     const loadedInteractables = {};
     const keys = Object.keys(data);
     keys.forEach(key => {
-      const interactable = new Interactable(data[key]);
+      const interactable = new Interactable(data[key], this._variableSelectService);
       loadedInteractables[key] = interactable;
     });
     this.interactables = loadedInteractables;

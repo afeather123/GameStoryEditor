@@ -1,0 +1,111 @@
+//Ocean colors
+$blue-1: #0E1F31;
+$blue-2: #1A3964;
+$blue-3: #71B8CC;
+$blue-4: #7DA2CA;
+$grey: #B8B4C6;
+
+/* RGB */
+$red: rgba(255, 89, 94, 1);
+$gold: rgba(255, 202, 58, 1);
+$green: rgba(138, 201, 38, 1);
+$blue: rgba(25, 130, 196, 1);
+$baby-blue: rgb(58, 169, 197);
+$indigo: rgba(106, 76, 147, 1);
+
+%white-text {
+    a {
+        color: white;
+    }
+}
+
+a {
+    color: white;
+}
+
+.node {
+    .card-header {
+        background-color: $blue-3;
+        h5 {
+            color: white;
+        }
+    }
+    .card-body {
+        background-color: rgb(252, 252, 252);
+    }
+
+    .data {
+        background-color: $blue-2;
+    }
+
+    .choice {
+        background-color: $blue-4;
+    }
+
+    .condition {
+        background-color: $grey;
+    }
+    
+    .redirects {
+        background-color: $blue-4;
+    }
+
+    .set-condition {
+        background-color: $blue-3;
+    }
+}
+
+.node-back {
+    background-color: rgb(177, 207, 214);
+    color: white;
+}
+
+.condition {
+    background-color: $grey;
+}
+
+.global-var {
+    background-color: $blue-2;
+}
+
+.local-var {
+    background-color: $blue-3;
+}
+
+
+
+
+
+.file-tree {
+    background-color: $blue-2;
+}
+
+.entrypoints {
+    background-color: $blue-3;
+}
+
+.entrypoint {
+    background-color: $blue-4;
+}
+
+.node-preview {
+    background-color: $blue-4;
+}
+
+.my-navbar-style {
+    background-color: $blue-4;
+}
+
+body {
+    background-color: rgb(241, 241, 241);
+}
+
+.btn-danger {
+}
+
+.btn-success {
+}
+
+.select2-container {
+    margin-right: 5px;
+}

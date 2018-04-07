@@ -1,4 +1,4 @@
-<app-node-select [value]="this.redirect" (selectNode)="OnChange($event)"></app-node-select>
-<div id="accordianId" role="tablist" aria-multiselectable="true">
+<app-node-select [value]="this.redirect" (selectNode)="OnChange($event)" [ngClass]="'mb3'"></app-node-select>
+<div id="accordianId" role="tablist" aria-multiselectable="true" class="mt-2">
   <app-condition-collection [conditions]="this.redirect.conditions"></app-condition-collection>
 </div>

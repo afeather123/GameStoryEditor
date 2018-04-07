@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { NodeData } from '../../models/nodeData';
 import { DataSetting } from '../../models/DataSetting';
 import { InteractableService } from '../../services/interactable.service';
@@ -15,6 +15,7 @@ export class DataCollectionComponent implements OnInit {
 
   @Input() nodeData: NodeData[] = [];
   dataSettings: GlobalDataSettings;
+  @ViewChild('collapse') collapse: ElementRef;
 
   constructor(private _interactableService: InteractableService) { }
 
@@ -60,6 +61,7 @@ export class DataCollectionComponent implements OnInit {
       newData.name = this.dataSettings.settings[0].name;
     }
     this.nodeData.unshift(newData);
+    $(this.collapse.nativeElement).collapse('show');
     e.stopPropagation();
   }
 

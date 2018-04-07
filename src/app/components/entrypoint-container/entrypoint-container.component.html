@@ -1,16 +1,16 @@
 <div class="card" *ngIf="currentInteractable !== null && currentInteractable !== undefined">
-  <div class="card-header" role="tab" id="section1HeaderId">
+  <div class="card-header entrypoints" role="tab" id="section1HeaderId">
     <h5 class="mb-0">
       <a data-toggle="collapse" data-parent="#accordianId" href="#entrypointcontainer" aria-expanded="true" aria-controls="entrypointcontainer">
         Entry Points
       </a>
-      <button class="btn btn-square float-right" (click)="this.currentInteractable.AddEntryPoint()">
+      <button class="btn btn-square float-right" (click)="AddEntryPoint($event)">
           <i class="fa fa-plus"></i>
       </button>
     </h5>
     
   </div>
-  <div id="entrypointcontainer" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
+  <div id="entrypointcontainer" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId" #collapse>
     <div class="card-body">
       <div id="accordianId" role="tablist" aria-multiselectable="true">
         <app-entrypoint (deleteEntryPoint)="DeleteEntryPoint(entrypoint)" [entryPoint]="entrypoint" *ngFor="let entrypoint of this.currentInteractable.entryPoints"></app-entrypoint>

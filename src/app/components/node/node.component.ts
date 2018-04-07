@@ -6,6 +6,7 @@ import { Redirect } from '../../models/redirect';
 import { InteractableService } from '../../services/interactable.service';
 import { ConditionOperators } from '../../models/ConditionOperators';
 import { NodeData } from '../../models/nodeData';
+import { VariableSelectService } from '../../services/variable-select.service';
 
 @Component({
   selector: 'app-node',
@@ -23,7 +24,7 @@ export class NodeComponent implements OnInit {
 
   @Input() node: DialogueNode;
 
-  constructor(private interactableService: InteractableService) { }
+  constructor(private interactableService: InteractableService, private _variableSelectService: VariableSelectService) { }
 
   ngOnInit() {
     console.log('happening?');
@@ -69,11 +70,9 @@ export class NodeComponent implements OnInit {
   }
 
   AddConditionSetter(e: Event) {
-    const newCondition: Condition = {
-      varID: 'none',
-      value: 0,
-      operator: '='
-    };
+    const newCondition = new Condition();
+    newCondition.operator = '=';
+    newCondition.value = 0;
     this.node.setconditions.unshift(newCondition);
     e.stopPropagation();
   }

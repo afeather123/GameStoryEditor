@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Choice } from '../../models/choice';
+
+declare var $: any;
 
 @Component({
   selector: 'app-choice-collection',
@@ -11,6 +13,7 @@ export class ChoiceCollectionComponent implements OnInit {
   @Output() deleteLastChoice: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Input() choices: Choice[];
+  @ViewChild('collapse') collapse: ElementRef;
   constructor() { }
 
   ngOnInit() {
@@ -27,6 +30,7 @@ export class ChoiceCollectionComponent implements OnInit {
       setConditions: []
     } as Choice;
     this.choices.unshift(newChoice);
+    $(this.collapse.nativeElement).collapse('show');
     e.stopPropagation();
   }
 

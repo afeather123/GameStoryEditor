@@ -66,6 +66,7 @@ export class DownloadService {
   }
 
   private ComlpeteDownloadProject(fileTree: any) {
+    console.log(this.interactableData);
     const gameFile = this.convertToGameFormat(fileTree);
     const dataSettings = this.interactableService.dataSettings;
     const projectData = {
@@ -97,6 +98,8 @@ export class DownloadService {
       if (formattedCondition.varID !== undefined) {
         formattedConditions.push(formattedCondition);
       } else {
+        console.log(gameVarData);
+        console.log(condition);
         console.log('Error!');
       }
     });

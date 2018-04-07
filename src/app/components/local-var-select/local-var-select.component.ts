@@ -28,7 +28,7 @@ export class LocalVarSelectComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit() {
     this.globalVariables = this.variableSelectService.globalVars.vars;
     this.localScopeVariables = this.variableSelectService.currentLocalScope.vars;
-    setTimeout(() => {$(this.varSelect.nativeElement).select2({width: 'resolve'}); }, 2 );
+    setTimeout(() => {$(this.varSelect.nativeElement).select2(); }, 2 );
     $(this.varSelect.nativeElement).value = this.condition.varID;
     $(this.varSelect.nativeElement).bind('change', (e) => {
       this.condition.varID = e.target.value;

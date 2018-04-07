@@ -7,22 +7,44 @@ import { Observable } from 'rxjs/observable';
 import { EntryPoint } from './entrypoint';
 import { GlobalDataSettings } from './globalDataSettings';
 import { NodeData } from './nodeData';
+import { Condition } from './condition';
+import { VariableSelectService } from '../services/variable-select.service';
 
 export class Interactable {
     nodes: ArrayList<DialogueNode> = new ArrayList<DialogueNode>();
     entryPoints: EntryPoint[] = [];
     dataSettings: GlobalDataSettings;
 
-    constructor(data?: any) {
+    constructor(data?: any, variableSelectService?: VariableSelectService) {
         const newNodes: DialogueNode[] = [];
         if (data !== undefined) {
             data['nodes']['array'].forEach(node => {
-                const loadedNode = new DialogueNode(node);
+                const loadedNode = new DialogueNode(node, variableSelectService);
                 newNodes.push(loadedNode);
             });
             data['nodes']['array'] = newNodes;
             this.nodes = new ArrayList(data['nodes']);
-            this.entryPoints = data['entryPoints'];
+            const loadedEntryPoints: EntryPoint[] = [];
+            data['entryPoints'].forEach(entryPoint => {
+                const loadedRedirect: Redirect = {
+                    nodeID: entryPoint.redirect.nodeID,
+                    conditions: []
+                } as Redirect;
+                entryPoint.redirect.conditions.forEach(condition => {
+                    const loadedCondition = new Condition();
+                    loadedCondition.varID = condition.varID;
+                    loadedCondition.operator = condition.operator;
+                    loadedCondition.value = condition.value;
+                    loadedRedirect.conditions.push(loadedCondition);
+                });
+                const loadedPoint: EntryPoint = {
+                    name: entryPoint.name,
+                    id: entryPoint.id,
+                    redirect: loadedRedirect
+                } as EntryPoint;
+                loadedEntryPoints.push(loadedPoint);
+            });
+            this.entryPoints = loadedEntryPoints;
         }
     }
 

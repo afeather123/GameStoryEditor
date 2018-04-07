@@ -29,8 +29,9 @@ export class EntrypointComponent implements OnInit {
     this.ChangeNode(this.entryPoint.redirect.nodeID);
   }
 
-  editNode (nodeID: string) {
+  editNode (nodeID: string, e: Event) {
     this.interactableService.editNode(nodeID);
+    e.stopPropagation();
   }
 
   DeleteEntryPoint() {

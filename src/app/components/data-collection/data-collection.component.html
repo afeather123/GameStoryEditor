@@ -1,5 +1,5 @@
 <div class="card">
-  <div class="card-header" role="tab" id="section1HeaderId">
+  <div class="card-header data" role="tab" id="section1HeaderId">
     <h5 class="mb-0">
       <a data-toggle="collapse" data-parent="#accordianId" href="#nodeData" aria-expanded="true" aria-controls="nodeData">
         Data
@@ -9,9 +9,9 @@
       </a>
     </h5>
   </div>
-  <div id="nodeData" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
+  <div id="nodeData" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId" #collapse>
     <div class="card-body">
-      <div class="row form-inline" *ngFor="let data of nodeData">
+      <div class="row form-inline mb-2" *ngFor="let data of nodeData">
         <div *ngIf="dataSettings.settings.length === 0">
           <div class="form-group col-sm-12">
             <input type="text" [(ngModel)]="data.name" class="form-control">
@@ -36,15 +36,14 @@
           <div *ngIf="getSetting(data.name) !== undefined" class="form-inline">
             <app-select2 [data]="data" [propertyName]="'name'" [options]="dataSettings.getSettingsNames(true)"></app-select2>
             <div *ngIf="getSetting(data.name) !== null && getSetting(data.name) !== undefined">
-              <div class="form-group">
                 <input type="number" [(ngModel)]="data.value" *ngIf="getSetting(data.name).type === 'number'" class="form-control">
                 <select [value]="data.value.toString()" *ngIf="getSetting(data.name).type === 'boolean'" (change)="changeBool($event.target.value, data)"
                   class="form-control">
                   <option value="true">True</option>
                   <option value="false">False</option>
                 </select>
+                <span *ngIf="getSetting(data.name).type === 'string'" class="margin"></span>
                 <app-select2 [data]="data" [propertyName]="'value'" [options]="getSetting(data.name).getOptionsArray()" *ngIf="getSetting(data.name).type === 'string'"></app-select2>
-              </div>
             </div>
             <button class="btn btn-danger float-right" (click)="deleteData(data)">
               <i class="fa fa-trash"></i>

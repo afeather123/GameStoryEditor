@@ -22,3 +22,5 @@
     overflow: auto;
     padding-right: 15px;
 }
+
+.inner::-webkit-scrollbar { width: 0 !important }

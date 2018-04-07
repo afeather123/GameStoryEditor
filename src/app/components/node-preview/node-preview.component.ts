@@ -1,10 +1,12 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy, ViewChild } from '@angular/core';
 import { Interactable } from '../../models/interactable';
 import { InteractableService } from '../../services/interactable.service';
 import { DialogueNode } from '../../models/node';
 import { NodeObject } from '../../models/nodeobject';
 import { Condition } from '../../models/condition';
 import { Subscription } from 'rxjs/Subscription';
+
+declare var $: any;
 
 @Component({
   selector: 'app-node-preview',
@@ -18,6 +20,7 @@ export class NodePreviewComponent implements OnInit, OnDestroy {
   currentInteractable: Interactable;
   searchString = '';
   subscription: Subscription;
+  @ViewChild('collapse') collapse;
 
   constructor(private interactableService: InteractableService) { }
 
@@ -34,6 +37,7 @@ export class NodePreviewComponent implements OnInit, OnDestroy {
   addNode(e: Event) {
     this.currentInteractable.AddNode();
     this.interactableService.addNode();
+    $(this.collapse.nativeElement).collapse('show');
     e.stopPropagation();
   }
 

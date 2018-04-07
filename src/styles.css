@@ -1,1 +1,74 @@
-/* You can add global styles to this file, and also import other style files */
+/* RGB */
+a {
+  color: white;
+}
+
+.node .card-header {
+  background-color: #71B8CC;
+}
+.node .card-header h5 {
+  color: white;
+}
+.node .card-body {
+  background-color: #fcfcfc;
+}
+.node .data {
+  background-color: #1A3964;
+}
+.node .choice {
+  background-color: #7DA2CA;
+}
+.node .condition {
+  background-color: #B8B4C6;
+}
+.node .redirects {
+  background-color: #7DA2CA;
+}
+.node .set-condition {
+  background-color: #71B8CC;
+}
+
+.node-back {
+  background-color: #b1cfd6;
+  color: white;
+}
+
+.condition {
+  background-color: #B8B4C6;
+}
+
+.global-var {
+  background-color: #1A3964;
+}
+
+.local-var {
+  background-color: #71B8CC;
+}
+
+.file-tree {
+  background-color: #1A3964;
+}
+
+.entrypoints {
+  background-color: #71B8CC;
+}
+
+.entrypoint {
+  background-color: #7DA2CA;
+}
+
+.node-preview {
+  background-color: #7DA2CA;
+}
+
+.my-navbar-style {
+  background-color: #7DA2CA;
+}
+
+body {
+  background-color: #f1f1f1;
+}
+
+.select2-container {
+  margin-right: 5px;
+}

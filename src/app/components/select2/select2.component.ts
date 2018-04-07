@@ -22,11 +22,16 @@ export class Select2Component implements OnInit, AfterViewInit, OnChanges {
   @Input() overrideInitial: string;
   @ViewChild('select') select: ElementRef;
   @Output() change: EventEmitter<string> = new EventEmitter<string>();
+  styles: any = {
+    'margin-right': '5px'
+  };
 
   constructor() { }
 
   ngOnInit() {
-
+    if (this.width !== undefined) {
+      this.styles.width = this.width;
+    }
   }
 
   ngOnChanges() {
@@ -69,6 +74,7 @@ export class Select2Component implements OnInit, AfterViewInit, OnChanges {
     if (this.width !== undefined) {
       styles.width = this.width;
     }
+    styles['margin-right'] = '5px';
     return styles;
   }
 }

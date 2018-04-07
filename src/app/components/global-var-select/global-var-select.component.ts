@@ -24,7 +24,9 @@ export class GlobalVarSelectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.variables = this.variableSelectService.getAllVariables();
-    setTimeout(() => {$(this.varSelect.nativeElement).select2(); }, 2 );
+    setTimeout(() => {$(this.varSelect.nativeElement).select2({
+      width: 'resolve' // need to override the changed default
+  }); }, 2 );
     $(this.varSelect.nativeElement).value = this.condition.varID;
     $(this.varSelect.nativeElement).bind('change', (e) => {
       this.condition.varID = e.target.value;

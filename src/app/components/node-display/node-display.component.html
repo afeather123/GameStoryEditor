@@ -1,7 +1,7 @@
 <div class="node-body outer">
   <div class="inner">
     <div class="card" *ngFor="let node of editorNodes.nodeTrail">
-      <h5 class="card-header bg-secondary">{{node.GetName()}}
+      <h5 class="card-header node-back">{{node.GetName()}}
         <button type="button" class="btn btn-primary float-right" (click)="returnToNode(node)">
           <i class="fa fa-arrow-left"></i>
         </button>

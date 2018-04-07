@@ -1,6 +1,6 @@
 
-<div class="container" *ngIf="redirects.length === 1 && redirects[0].conditions.length === 0">
-  <div class="row">
+<div class="container redirect" *ngIf="redirects.length === 1 && redirects[0].conditions.length === 0">
+  <div class="row mt-2">
     <label class="mr-3">Redirect: </label>
     <app-node-select [value]="redirects[0]"></app-node-select>
     <app-go-to-button [nodeID]="redirects[0].nodeID" [ngClass]="'ml-3'" *ngIf="redirects[0].nodeID !== 'none'"></app-go-to-button>
@@ -14,13 +14,13 @@
     <h5 class="mb-0">
       <a data-toggle="collapse" data-parent="#accordianId" href="#redirectcontainer{{id}}" aria-expanded="true" [attr.aria-controls]="'redirectcontainer' + id">
         Redirects
-        <button class="btn btn-square float-right" (click)="AddRedirect()">
+        <button class="btn btn-square float-right" (click)="AddRedirect($event)">
             <i class="fa fa-plus"></i>
         </button>
       </a>
     </h5>
   </div>
-  <div id="redirectcontainer{{id}}" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
+  <div id="redirectcontainer{{id}}" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId" #collapse>
     <div class="card-body">
       <div id="accordianId" role="tablist" aria-multiselectable="true">
           <app-redirect-wrapper (deleteRedirect)="DeleteRedirect($event)" [redirect]="redirect" *ngFor="let redirect of redirects"></app-redirect-wrapper>

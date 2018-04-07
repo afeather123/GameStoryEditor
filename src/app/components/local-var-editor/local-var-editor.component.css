@@ -1,0 +1,27 @@
+.editField {
+    width: 30%;
+    max-width: 30%;
+    margin-right: 5px;
+}
+
+.typeSelect {
+    width: 25%;
+    max-width: 25%;
+    margin-right: 5px;
+}
+
+.btn-danger {
+    max-width: 10%;
+}
+
+.varEditor {
+    margin-bottom: 8px;
+    width: auto;
+}
+
+.globalVarBody {
+    height: 100%;
+    max-height: 250px;
+    vertical-align: top;
+    overflow-y:scroll;
+}

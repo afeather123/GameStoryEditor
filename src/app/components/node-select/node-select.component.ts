@@ -20,6 +20,7 @@ export class NodeSelectComponent implements OnInit, OnDestroy, OnChanges {
   deleteNodeSubscription: Subscription;
   @ViewChild('select') select: ElementRef;
   @Input() value: NodeID;
+  @Input() styles: any = {};
   @Output() selectNode: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private interactableService: InteractableService,

@@ -25,7 +25,7 @@
       </div>
       <div *ngIf="dataSetting.options != null">
         <div class="row" *ngFor="let option of dataSetting.options">
-          <input type="text" *ngIf="dataSetting.type === 'string'" [(ngModel)]="option.option" class="form-control mb-2">
+          <input type="text" *ngIf="dataSetting.type === 'string'" [(ngModel)]="option.option" class="form-control optionField mb-2">
         </div>
       </div>
     </div>

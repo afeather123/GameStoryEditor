@@ -16,20 +16,9 @@ export class ConditionCollectionComponent implements OnInit {
   static idcount = 0;
   id: number;
   @Input() name = 'Condition';
+  @Input() class = 'condition';
   @ViewChild('collapse') collapse: ElementRef;
-  @Input() conditions: Condition[] = [
-    {
-      varID: '0',
-      operator: '!=',
-      value: 'please',
-      type: 'string'
-    },
-    {
-      varID: 'none',
-      operator: '=',
-      value: 0
-    }
-  ] as Condition[];
+  @Input() conditions: Condition[] = [];
 
   @Input() conditionOperators: ConditionOperators = {
     numberOperators: ['=', '!=', '>', '<', '>=', '<='],
@@ -45,29 +34,24 @@ export class ConditionCollectionComponent implements OnInit {
   }
 
   addCondition(e: Event) {
-    const condition = {
-      varID: 'none',
-      operator: '=',
-      value: true
-    } as Condition;
+    const condition = new Condition();
+    condition.varID = 'none';
+    condition.operator = '=';
+    condition.value = true;
     this.conditions.unshift(condition);
     $(this.collapse.nativeElement).collapse('show');
     e.stopPropagation();
   }
 
   conditionChanged(condition: Condition) {
-    const type = this.variableSelectService.CheckVariableType(condition.varID);
-    if (condition.type !== type) {
-      condition.operator = '=';
-      if (type === 'string') {
-        condition.value = 'placeholder';
-      } else if (type === 'number') {
-        condition.value = 0;
-      } else if (type === 'boolean') {
-        condition.value = true;
-      }
+  }
+
+  TypeOfCondition(condition: Condition) {
+    if (condition.varID === 'none' || condition.varID === undefined || condition.varID === null) {
+      return 'none';
+    } else {
+      return typeof this.variableSelectService.allVariables.GetAtId(condition.varID).value;
     }
-    condition.type = type;
   }
 
   onBoolChange(e: any, condition: Condition) {

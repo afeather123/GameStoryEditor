@@ -5,6 +5,7 @@ import { Condition } from '../../models/condition';
 import { NodeID } from '../../models/nodeID';
 import { Redirect } from '../../models/redirect';
 import { NodeComponent } from '../node/node.component';
+import { VariableSelectService } from '../../services/variable-select.service';
 
 @Component({
   selector: 'app-choice',
@@ -34,18 +35,16 @@ export class ChoiceComponent implements OnInit {
     local: false
   };
 
-  constructor() { }
+  constructor(private _variableSelectService: VariableSelectService) { }
 
   ngOnInit() {
     this.id = ChoiceComponent.idCount++;
   }
 
   addCondition(e: Event, setter: boolean) {
-    const newCondition: Condition = {
-      varID: 'none',
-      value: 0,
-      operator: '='
-    };
+    const newCondition = new Condition();
+    newCondition.operator = '=';
+    newCondition.value = true;
     if (!setter) {
       if (this.choice.conditions === null || this.choice.conditions === undefined) {
         this.choice.conditions = [];
@@ -61,13 +60,12 @@ export class ChoiceComponent implements OnInit {
   }
 
   addRedirect(e: Event) {
+    const newCondition = new Condition();
+    newCondition.operator = '=';
+    newCondition.value = true;
     const newRedirect: Redirect = {
       nodeID: 'none',
-      conditions: [{
-        varID: 'none',
-        value: 0,
-        operator: '='
-      }]
+      conditions: [newCondition]
     };
     this.choice.redirects.push(newRedirect);
     e.stopPropagation();

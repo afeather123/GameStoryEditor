@@ -14,10 +14,8 @@ declare var $: any;
 export class LocalVarEditorComponent implements OnInit, OnDestroy {
 
   currentScope: ScopeVariables;
-  @ViewChild('stringVars') stringVars: ElementRef;
-  @ViewChild('boolVars') boolVars: ElementRef;
-  @ViewChild('numVars') numVars: ElementRef;
   subscription: Subscription;
+  searchString = '';
 
   constructor(private variableSelectService: VariableSelectService, private changeDetectorRef: ChangeDetectorRef) { }
 
@@ -33,13 +31,6 @@ export class LocalVarEditorComponent implements OnInit, OnDestroy {
 
   addVariable(e: Event, type: string) {
     this.variableSelectService.addNewVariable(type, true);
-    if (type === 'string') {
-      $(this.stringVars.nativeElement).collapse('show');
-    } else if (type === 'number') {
-      $(this.numVars.nativeElement).collapse('show');
-    } else if (type === 'boolean') {
-      $(this.boolVars.nativeElement).collapse('show');
-    }
     e.stopPropagation();
   }
 
@@ -58,5 +49,19 @@ export class LocalVarEditorComponent implements OnInit, OnDestroy {
 
   ChangeBoolValue(variable: Variable, e: any) {
     variable.value = (e.target.value === 'true');
+  }
+
+  ChangeType(variable: Variable, type: string) {
+    if (type === 'string') {
+      variable.value = 'default';
+    } else if (type === 'number') {
+      variable.value = 0;
+    } else if (type === 'boolean') {
+      variable.value = true;
+    }
+  }
+
+  TypeOf(variable: Variable) {
+    return typeof variable.value;
   }
 }

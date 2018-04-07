@@ -1,5 +1,5 @@
 <div class="card" *ngIf="currentInteractable !== null && currentInteractable !== undefined">
-  <div class="card-header" role="tab" id="section1HeaderId">
+  <div class="card-header node-preview" role="tab" id="section1HeaderId">
     <h5 class="mb-0">
       <a data-toggle="collapse" data-parent="#accordianId" href="#nodePreview" aria-expanded="true" aria-controls="nodePreview">
         Nodes
@@ -9,7 +9,7 @@
       </a>
     </h5>
   </div>
-  <div id="nodePreview" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
+  <div id="nodePreview" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId" #collapse>
     <div class="card-body">
       <input type="text" class="form-control mb-2" [(ngModel)]="searchString" placeholder="Search Nodes...">
       <div class="node-body">

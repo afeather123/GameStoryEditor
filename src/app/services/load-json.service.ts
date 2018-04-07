@@ -47,8 +47,8 @@ export class LoadJsonService {
   }
 
   uploadProject(projectData: any) {
-    this.interactableData.next(projectData['interactables']);
     this.variableData.next(projectData['variables']);
+    this.interactableData.next(projectData['interactables']);
     this.jstreeDataListeners.next(projectData['jstree']);
     this.dataSettingsData.next(projectData['dataSettings']);
   }

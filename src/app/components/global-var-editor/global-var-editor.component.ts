@@ -12,13 +12,10 @@ declare var $: any;
 })
 export class GlobalVarEditorComponent implements OnInit, OnDestroy {
 
-  stringVariables: Variable[];
-  boolVariables: Variable[];
-  numVariables: Variable[];
-  @ViewChild('stringVars') stringVars: ElementRef;
-  @ViewChild('boolVars') boolVars: ElementRef;
-  @ViewChild('numVars') numVars: ElementRef;
+  globalVariables: Variable[];
   subscription: Subscription;
+  searchString = '';
+  @ViewChild('collapse') collapse: ElementRef;
 
   constructor(private variableSelectService: VariableSelectService) { }
 
@@ -35,20 +32,12 @@ export class GlobalVarEditorComponent implements OnInit, OnDestroy {
   }
 
   OnLoadVariables() {
-    this.stringVariables = this.variableSelectService.globalVars.stringVars;
-    this.boolVariables = this.variableSelectService.globalVars.boolVars;
-    this.numVariables = this.variableSelectService.globalVars.numVars;
+    this.globalVariables = this.variableSelectService.globalVars.vars;
   }
 
   addVariable(e: Event, type: string) {
+    $(this.collapse.nativeElement).collapse('show');
     this.variableSelectService.addNewVariable(type, false);
-    if (type === 'string') {
-      $(this.stringVars.nativeElement).collapse('show');
-    } else if (type === 'number') {
-      $(this.numVars.nativeElement).collapse('show');
-    } else if (type === 'boolean') {
-      $(this.boolVars.nativeElement).collapse('show');
-    }
     e.stopPropagation();
   }
 
@@ -61,8 +50,21 @@ export class GlobalVarEditorComponent implements OnInit, OnDestroy {
   }
 
   ChangeBoolValue(variable: Variable, e: any) {
-    console.log(e.target.value === 'true');
     variable.value = (e.target.value === 'true');
+  }
+
+  ChangeType(variable: Variable, type: string) {
+    if (type === 'string') {
+      variable.value = 'default';
+    } else if (type === 'number') {
+      variable.value = 0;
+    } else if (type === 'boolean') {
+      variable.value = true;
+    }
+  }
+
+  TypeOf(variable: Variable) {
+    return typeof variable.value;
   }
 
 }

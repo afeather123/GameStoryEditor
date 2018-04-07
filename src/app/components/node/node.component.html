@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card node">
     <div class="card-header" role="tab" id="section1HeaderId">
       <h5 class="mb-0">
           {{node.GetName()}}
@@ -22,7 +22,7 @@
         <input type="text" [(ngModel)]="node.name" (keyup)="changeName($event)" class="form-control mb-2" *ngIf="node.name.length > 0">
         <textarea id="" cols="40" rows="5" [(ngModel)]="node.text" class="form-control mb-2" (keyup)="changeText($event)"></textarea>
         <app-data-collection [nodeData]="node.data" *ngIf="node.data !== undefined && node.data.length > 0"></app-data-collection>
-        <app-condition-collection [conditionOperators]="setConditionOperators" [name]="'Set Conditions'" [conditions]="node.setconditions" *ngIf="node.setconditions != null && node.setconditions != undefined && node.setconditions.length > 0"></app-condition-collection>
+        <app-condition-collection [conditionOperators]="setConditionOperators" [name]="'Set Conditions'" [class]="'set-condition'" [conditions]="node.setconditions" *ngIf="node.setconditions != null && node.setconditions != undefined && node.setconditions.length > 0"></app-condition-collection>
         <app-redirect-container [redirects]="node.redirects" *ngIf="node.redirects !== null && node.redirects !== undefined && node.redirects.length > 0"></app-redirect-container>
         <app-choice-collection (deleteLastChoice)="deleteLastChoice()" [choices]="node.choices" *ngIf="node.choices !== null && node.choices !== undefined && node.choices.length > 0"></app-choice-collection>
       </div>

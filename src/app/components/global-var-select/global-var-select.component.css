@@ -1,7 +1,8 @@
 select {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 130px;
-    width: 130px;
-  }
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 120px;
+  max-width: 120px;
+  margin-right: 5px;
+}

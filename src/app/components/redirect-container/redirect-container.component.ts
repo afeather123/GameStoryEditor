@@ -1,7 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Redirect } from '../../models/redirect';
 import { NodeID } from '../../models/nodeID';
 import { InteractableService } from '../../services/interactable.service';
+
+declare var $: any;
 
 @Component({
   selector: 'app-redirect-container',
@@ -13,6 +15,7 @@ export class RedirectContainerComponent implements OnInit {
   static idCount = 0;
   id;
   @Input() redirects: Redirect[] = [];
+  @ViewChild('collapse') collapse: ElementRef;
 
   constructor(private interactableService: InteractableService) { }
 
@@ -20,12 +23,14 @@ export class RedirectContainerComponent implements OnInit {
     this.id = RedirectContainerComponent.idCount++;
   }
 
-  AddRedirect() {
+  AddRedirect(e: Event) {
     const newRedirect: Redirect = {
       nodeID: 'none',
       conditions: []
     };
     this.redirects.push(newRedirect);
+    $(this.collapse.nativeElement).collapse('show');
+    e.stopPropagation();
   }
 
   DeleteRedirect(redirect: Redirect) {
