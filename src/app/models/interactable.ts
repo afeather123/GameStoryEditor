@@ -60,7 +60,7 @@ export class Interactable {
             }],
             choices: []
         };
-        if (this.dataSettings.presets.length > 0) {
+        if (this.dataSettings !== undefined && this.dataSettings.presets !== undefined && this.dataSettings.presets.length > 0) {
             const data: NodeData[] = [];
             this.dataSettings.presets.forEach(preset => {
                 const datum: NodeData = {

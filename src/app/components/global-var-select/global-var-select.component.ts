@@ -24,9 +24,7 @@ export class GlobalVarSelectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.variables = this.variableSelectService.getAllVariables();
-    setTimeout(() => {$(this.varSelect.nativeElement).select2({
-      width: 'resolve' // need to override the changed default
-  }); }, 2 );
+    this.resetSelect();
     $(this.varSelect.nativeElement).value = this.condition.varID;
     $(this.varSelect.nativeElement).bind('change', (e) => {
       this.condition.varID = e.target.value;
@@ -51,16 +49,20 @@ export class GlobalVarSelectComponent implements OnInit, OnDestroy {
     this.variables.unshift(variable);
   }
 
+  resetSelect() {
+    $(this.varSelect.nativeElement).select2({ width: 'resolve', 'max-width': 'resolve' });
+  }
+
   OnVarNameChange() {
     // console.log(nameChange);
     // this.globalVariables[nameChange.index].name = nameChange.name;
     this.changeDetectorRef.detectChanges();
-    setTimeout(() => {$(this.varSelect.nativeElement).select2(); }, 2 );
+    this.resetSelect();
   }
 
   OnLoadVariables(vars: Variable[]) {
     this.variables = vars;
-    setTimeout(() => {$(this.varSelect.nativeElement).select2(); }, 2 );
+    this.resetSelect();
   }
 
   OnChange(e: any) {

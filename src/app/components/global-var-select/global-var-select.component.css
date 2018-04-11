@@ -2,7 +2,6 @@ select {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 120px;
-  max-width: 120px;
+  max-width: 25%;
   margin-right: 5px;
 }

@@ -4,11 +4,11 @@
       <a data-toggle="collapse" data-parent="#accordianId" href="#redirectWrapper{{id}}" aria-expanded="true" [attr.aria-controls]="'redirectWrapper' + id">
          <span *ngIf="selectedNode === null">No node selected</span>
          <span *ngIf="selectedNode !== null">{{selectedNode.GetName()}}</span>
-        <app-go-to-button [nodeID]="redirect.nodeID" *ngIf="redirect.nodeID !== 'none'"></app-go-to-button>
-        <button class="btn btn-danger float-right" type="submit" (click)="DeleteRedirect()">
-          <i class="fa fa-trash"></i>
-        </button>
       </a>
+      <app-go-to-button [nodeID]="redirect.nodeID" *ngIf="redirect.nodeID !== 'none'"></app-go-to-button>
+      <button class="btn btn-danger float-right" type="submit" (click)="DeleteRedirect()">
+        <i class="fa fa-trash"></i>
+      </button>
     </h5>
   </div>
   <div id="redirectWrapper{{id}}" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">

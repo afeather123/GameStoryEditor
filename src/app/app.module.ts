@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import {FusejsModule} from 'angular-fusejs';
+import { NgxElectronModule } from 'ngx-electron';
 
 import { AppComponent } from './app.component';
 import { MainEditorComponent } from './components/main-editor/main-editor.component';
@@ -85,7 +86,8 @@ import { Select2MultipleComponent } from './components/select2-multiple/select2-
     HttpModule,
     FusejsModule,
     AppRoutingModule,
-    SelectModule
+    SelectModule,
+    NgxElectronModule
   ],
   providers: [VariableSelectService, LoadJsonService, InteractableService, DownloadService],
   bootstrap: [AppComponent]

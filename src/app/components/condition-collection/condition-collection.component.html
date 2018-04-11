@@ -3,10 +3,10 @@
     <h5 class="mb-0">
       <a data-toggle="collapse" data-parent="#accordianId" href="#{{'cc' + id}}" aria-expanded="true" [attr.aria-controls]="'cc' + id">
         {{name}}
-        <button class="btn btn-square float-right" (click)="addCondition($event)">
-          <i class="fa fa-plus"></i>
-        </button>
       </a>
+      <button class="btn btn-square float-right" (click)="addCondition($event)">
+        <i class="fa fa-plus"></i>
+      </button>
     </h5>
   </div>
   <div id="{{'cc' + id}}" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId" #collapse>

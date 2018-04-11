@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/observable';
 import { InteractableService } from './interactable.service';
 import { VariableSelectService } from './variable-select.service';
 import { LoadJsonService } from './load-json.service';
+import {ElectronService} from 'ngx-electron';
 
 @Injectable()
 export class DownloadService {
@@ -24,7 +25,7 @@ export class DownloadService {
   }
 
   constructor(private interactableService: InteractableService, private variableSelectService: VariableSelectService,
-    private loadJsonService: LoadJsonService) {
+    private loadJsonService: LoadJsonService, private _electronService: ElectronService) {
     this.interactableService.JSTreeLoadObservable().subscribe((fileTree: any) => {
       if (this.downloadType === 'withProject') {
         this.ComlpeteDownloadProject(fileTree);
@@ -35,6 +36,12 @@ export class DownloadService {
     this.loadJsonService.ProjectNameObservable().subscribe((name: string) => {
       this.filename = name;
     });
+    this._electronService.ipcRenderer.on('download-project', () => {this.electronDownloadRequest(); });
+    this._electronService.ipcRenderer.on('download-data', () => { this.DownloadProject(false); });
+  }
+
+  private electronDownloadRequest() {
+    this.DownloadProject(true);
   }
 
   download(filename, text) {
@@ -76,7 +83,7 @@ export class DownloadService {
       dataSettings: dataSettings,
       jstree: fileTree
     };
-    this.download('project.json', JSON.stringify(projectData));
+    this._electronService.ipcRenderer.send('complete-save', JSON.stringify(projectData));
   }
 
   private ComlpeteDownloadGameData(fileTree: any) {
@@ -84,7 +91,7 @@ export class DownloadService {
     const projectData = {
       gameData: gameFile
     };
-    this.download('project.json', JSON.stringify(projectData));
+    this._electronService.ipcRenderer.send('complete-data', JSON.stringify(projectData));
   }
 
   convertConditions(conditions: any, gameVarData: any): any {

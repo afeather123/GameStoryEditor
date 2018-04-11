@@ -4,11 +4,11 @@
       <a data-toggle="collapse" data-parent="#accordianId" href="#entryPoint{{entryPoint.id}}" aria-expanded="true" [attr.aria-controls]="'entryPoint' + entryPoint.id">
         <span *ngIf="node !== undefined && node !== null">{{node.GetName()}}</span>
         <span *ngIf="node === undefined">No node selected</span>
-        <button type="button" class="btn btn-primary float-right" (click)="editNode(entryPoint.redirect.nodeID, $event)" *ngIf="entryPoint.redirect.nodeID !== 'none'"><i class="fa fa-arrow-right"></i></button>
-        <button class="btn btn-danger float-right mr-2" (click)="DeleteEntryPoint()">
-            <i class="fa fa-trash"></i>
-        </button>
       </a>
+      <button type="button" class="btn btn-primary float-right" (click)="editNode(entryPoint.redirect.nodeID, $event)" *ngIf="entryPoint.redirect.nodeID !== 'none'"><i class="fa fa-arrow-right"></i></button>
+      <button class="btn btn-danger float-right mr-2" (click)="DeleteEntryPoint()">
+          <i class="fa fa-trash"></i>
+      </button>
     </h5>
   </div>
   <div id="entryPoint{{entryPoint.id}}" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">

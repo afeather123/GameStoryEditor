@@ -17,7 +17,6 @@ interface ScopeVarObject {
 export class VariableSelectService {
 
   constructor(private http: Http, private loadJsonService: LoadJsonService) {
-    this.getJSON().subscribe((data: any) => {this.loadData(data.json().vars); });
     loadJsonService.VariableLoadObservable().subscribe((data: any) => {
       this.loadVariables(data);
     });

@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, Input, Output, EventEmitter, ViewChild, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
+import { Component, OnInit, ElementRef, Input, Output, EventEmitter, ViewChild, ChangeDetectorRef, OnDestroy, OnChanges, AfterViewInit } from '@angular/core';
 import { Variable } from '../../models/variable';
 import { Condition } from '../../models/condition';
 import { Subscription } from 'rxjs/Subscription';
@@ -12,7 +12,7 @@ declare var $: any;
   templateUrl: './local-var-select.component.html',
   styleUrls: ['./local-var-select.component.css']
 })
-export class LocalVarSelectComponent implements OnInit, OnDestroy, OnChanges {
+export class LocalVarSelectComponent implements OnInit, OnDestroy, AfterViewInit {
 
   globalVariables: Variable[] = [];
   localScopeVariables: Variable[] = [];
@@ -28,7 +28,10 @@ export class LocalVarSelectComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit() {
     this.globalVariables = this.variableSelectService.globalVars.vars;
     this.localScopeVariables = this.variableSelectService.currentLocalScope.vars;
-    setTimeout(() => {$(this.varSelect.nativeElement).select2(); }, 2 );
+  }
+
+  ngAfterViewInit() {
+    this.resetSelect();
     $(this.varSelect.nativeElement).value = this.condition.varID;
     $(this.varSelect.nativeElement).bind('change', (e) => {
       this.condition.varID = e.target.value;
@@ -45,10 +48,6 @@ export class LocalVarSelectComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  ngOnChanges(changes) {
-    console.log(changes);
-  }
-
   ngOnDestroy() {
     this.nameChangeSubscription.unsubscribe();
     this.scopeChangeSubscription.unsubscribe();
@@ -63,12 +62,16 @@ export class LocalVarSelectComponent implements OnInit, OnDestroy, OnChanges {
     // console.log(nameChange);
     // this.globalVariables[nameChange.index].name = nameChange.name;
     this.changeDetectorRef.detectChanges();
-    setTimeout(() => {$(this.varSelect.nativeElement).select2(); }, 2 );
+    this.resetSelect();
   }
 
   OnLoadVariables(vars: Variable[]) {
     this.globalVariables = vars;
-    setTimeout(() => {$(this.varSelect.nativeElement).select2(); }, 2 );
+    this.resetSelect();
+  }
+
+  resetSelect() {
+    setTimeout(() => {$(this.varSelect.nativeElement).select2({ width: 'resolve', 'max-width': 'resolve' }); }, 2 );
   }
 
   OnChange(e: any) {
