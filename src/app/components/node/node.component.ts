@@ -30,7 +30,7 @@ export class NodeComponent implements OnInit {
     console.log('happening?');
   }
 
-  AddChoice(e: Event) {
+  AddChoice() {
     if (this.node.redirects.length > 0) {
       if (!confirm('A node can only have redirects or choices. Are you sure you want to delete the redirects currently on the node?')) {
         return;
@@ -48,7 +48,6 @@ export class NodeComponent implements OnInit {
       setConditions: []
     } as Choice;
     this.node.choices.push(newChoice);
-    e.stopPropagation();
   }
 
   AddRedirect() {
@@ -69,12 +68,11 @@ export class NodeComponent implements OnInit {
     this.node.redirects.push(newRedirect);
   }
 
-  AddConditionSetter(e: Event) {
+  AddConditionSetter() {
     const newCondition = new Condition();
     newCondition.operator = '=';
     newCondition.value = 0;
     this.node.setconditions.unshift(newCondition);
-    e.stopPropagation();
   }
 
   AddNameLabel() {
@@ -82,7 +80,7 @@ export class NodeComponent implements OnInit {
     this.renameNode();
   }
 
-  AddData(e: Event) {
+  AddData() {
     const newData: NodeData = {
       name: 'data',
       value: 'default'
@@ -91,7 +89,6 @@ export class NodeComponent implements OnInit {
       this.node.data = [];
     }
     this.node.data.push(newData);
-    e.stopPropagation();
   }
 
   changeText(e) {

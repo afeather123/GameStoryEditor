@@ -10,6 +10,7 @@ let contents: webContents;
 let openPath: string;
 let savePath: string;
 let generatePath: string;
+let saveFolder = true;
 
 function createWindow () {
 
@@ -17,7 +18,6 @@ function createWindow () {
   Menu.setApplicationMenu(menu);
   mainWindow = new BrowserWindow({width: 1400, height: 1000});
   contents = mainWindow.webContents;
-
   mainWindow.webContents.openDevTools();
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'dist/index.html'),
@@ -88,6 +88,7 @@ const template = [{
     label: 'Generate Project Folder',
     accelerator: 'F11',
     click: () => {
+      saveFolder = true;
       const fileFilter = {
         name: 'Folder Name',
         extensions: ['']
@@ -104,6 +105,31 @@ const template = [{
       (filename) => {
         if (filename === undefined) {return; }
         generatePath = filename;
+        contents.send('download-data');
+      });
+    }
+  },
+  {
+    label: 'Save as Single Game File',
+    accelerator: 'F10',
+    click: () => {
+      saveFolder = false;
+      const fileFilter = {
+        name: '.json',
+        extensions: ['json']
+      };
+      const options = {
+        filters: [fileFilter],
+        defaultPath: undefined
+      };
+      if (openPath !== undefined) {
+        const filePath = openPath.substr(0, openPath.length - 5) + '-data.json';
+        options.defaultPath = filePath;
+      }
+      dialog.showSaveDialog(mainWindow, options,
+      (filename) => {
+        if (filename === undefined) {return; }
+        savePath = filename;
         contents.send('download-data');
       });
     }
@@ -134,15 +160,23 @@ function updateMenuPostUpload() {
 ipcMain.on('ping', () => {console.log('pong'); });
 
 ipcMain.on('complete-save', (event, args) => {
-  writeFile(savePath, args, (err) => {
-    if (err) {throw err; }
-    console.log('saved successfully!');
-  });
+  saveFile(args);
 });
 
 ipcMain.on('complete-data', (event, args) => {
-  generateProjectFolder(args);
+  if (saveFolder) {
+    generateProjectFolder(args);
+  } else {
+    saveFile(args);
+  }
 });
+
+function saveFile(file) {
+  writeFile(savePath, file, (err) => {
+    if (err) { throw err; }
+    console.log('saved successfully');
+  });
+}
 
 function generateProjectFolder(data: string) {
   if (!existsSync(generatePath)) {

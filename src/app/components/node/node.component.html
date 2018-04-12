@@ -9,10 +9,10 @@
                 </button>
             <div class="dropdown-menu" aria-labelledby="triggerId">
               <button class="dropdown-item" (click)="AddNameLabel()" [hidden]="node.choices.length > 0" *ngIf="node.name.length <= 0">Add Name Label</button>
-              <button class="dropdown-item" (click)="AddData($event)" [hidden]="node.data !== undefined && node.data.length > 0">Add Data</button>
-              <button class="dropdown-item" (click)="AddConditionSetter($event)" [hidden]="node.setconditions.length > 0">Add Condition Setter</button>
-              <button class="dropdown-item" (click)="AddRedirect($event)" [hidden]="node.redirects !== undefined && node.redirects.length > 1">Add Conditional Redirects</button>
-              <button class="dropdown-item" (click)="AddChoice($event)" [hidden]="node.choices.length > 0">Add Choice</button>
+              <button class="dropdown-item" (click)="AddData()" [hidden]="node.data !== undefined && node.data.length > 0">Add Data</button>
+              <button class="dropdown-item" (click)="AddConditionSetter()" [hidden]="node.setconditions.length > 0">Add Condition Setter</button>
+              <button class="dropdown-item" (click)="AddRedirect()" [hidden]="node.redirects !== undefined && node.redirects.length > 1">Add Conditional Redirects</button>
+              <button class="dropdown-item" (click)="AddChoice()" [hidden]="node.choices.length > 0">Add Choice</button>
             </div>
           </div>
       </h5>

@@ -10,6 +10,7 @@ var contents;
 var openPath;
 var savePath;
 var generatePath;
+var saveFolder = true;
 function createWindow() {
     var menu = electron_1.Menu.buildFromTemplate(template);
     electron_1.Menu.setApplicationMenu(menu);
@@ -85,6 +86,7 @@ var template = [{
                 label: 'Generate Project Folder',
                 accelerator: 'F11',
                 click: function () {
+                    saveFolder = true;
                     var fileFilter = {
                         name: 'Folder Name',
                         extensions: ['']
@@ -102,6 +104,32 @@ var template = [{
                             return;
                         }
                         generatePath = filename;
+                        contents.send('download-data');
+                    });
+                }
+            },
+            {
+                label: 'Save as Single Game File',
+                accelerator: 'F10',
+                click: function () {
+                    saveFolder = false;
+                    var fileFilter = {
+                        name: '.json',
+                        extensions: ['json']
+                    };
+                    var options = {
+                        filters: [fileFilter],
+                        defaultPath: undefined
+                    };
+                    if (openPath !== undefined) {
+                        var filePath = openPath.substr(0, openPath.length - 5) + '-data.json';
+                        options.defaultPath = filePath;
+                    }
+                    electron_1.dialog.showSaveDialog(mainWindow, options, function (filename) {
+                        if (filename === undefined) {
+                            return;
+                        }
+                        savePath = filename;
                         contents.send('download-data');
                     });
                 }
@@ -128,16 +156,24 @@ function updateMenuPostUpload() {
 // Inter-process com stuff
 electron_1.ipcMain.on('ping', function () { console.log('pong'); });
 electron_1.ipcMain.on('complete-save', function (event, args) {
-    fs_1.writeFile(savePath, args, function (err) {
+    saveFile(args);
+});
+electron_1.ipcMain.on('complete-data', function (event, args) {
+    if (saveFolder) {
+        generateProjectFolder(args);
+    }
+    else {
+        saveFile(args);
+    }
+});
+function saveFile(file) {
+    fs_1.writeFile(savePath, file, function (err) {
         if (err) {
             throw err;
         }
-        console.log('saved successfully!');
+        console.log('saved successfully');
     });
-});
-electron_1.ipcMain.on('complete-data', function (event, args) {
-    generateProjectFolder(args);
-});
+}
 function generateProjectFolder(data) {
     if (!fs_1.existsSync(generatePath)) {
         fs_1.mkdirSync(generatePath, '0777');

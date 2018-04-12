@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import {FusejsModule} from 'angular-fusejs';
 import { NgxElectronModule } from 'ngx-electron';
 
 import { AppComponent } from './app.component';
@@ -43,6 +42,8 @@ import { DataOptionsComponent } from './components/data-options/data-options.com
 import { DataWSettingEditorComponent } from './components/data-w-setting-editor/data-w-setting-editor.component';
 import { SelectModule } from 'ng2-select';
 import { Select2MultipleComponent } from './components/select2-multiple/select2-multiple.component';
+import { FusejsPipe } from './pipes/fusejs.pipe';
+import { FusejsService } from './fusejs.service';
 
 
 @NgModule({
@@ -78,18 +79,18 @@ import { Select2MultipleComponent } from './components/select2-multiple/select2-
     DataSetupComponent,
     DataOptionsComponent,
     DataWSettingEditorComponent,
-    Select2MultipleComponent
+    Select2MultipleComponent,
+    FusejsPipe
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    FusejsModule,
     AppRoutingModule,
     SelectModule,
     NgxElectronModule
   ],
-  providers: [VariableSelectService, LoadJsonService, InteractableService, DownloadService],
+  providers: [VariableSelectService, LoadJsonService, InteractableService, DownloadService, FusejsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

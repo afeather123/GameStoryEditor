@@ -74,10 +74,8 @@ export class DownloadService {
 
   private ComlpeteDownloadProject(fileTree: any) {
     console.log(this.interactableData);
-    const gameFile = this.convertToGameFormat(fileTree);
     const dataSettings = this.interactableService.dataSettings;
     const projectData = {
-      gameData: gameFile,
       interactables: this.interactableData,
       variables: this.variableData,
       dataSettings: dataSettings,
