@@ -18,7 +18,6 @@ function createWindow () {
   Menu.setApplicationMenu(menu);
   mainWindow = new BrowserWindow({width: 1400, height: 1000});
   contents = mainWindow.webContents;
-  mainWindow.webContents.openDevTools();
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'dist/index.html'),
     protocol: 'file:',

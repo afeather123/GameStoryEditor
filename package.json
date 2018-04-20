@@ -11,8 +11,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "electron": "ng build && tsc main.ts && electron .",
-    "electron-aot": "ng build --prod && electron .",
-    "package": "electron-packager . GameStoryEditor"
+    "electron-prod": "ng build --prod && electron .",
+    "package": "ng build --prod && electron-packager . GameStoryEditor"
   },
   "private": true,
   "dependencies": {

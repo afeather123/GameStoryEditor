@@ -1,27 +1,25 @@
 # GameStoryEditor
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
+This project was made with nodejs version 8.9.4
 
-## Development server
+The goal of this project was to make a convenient user interface for creating stories for games, where you could then export the project as a folder filled with JSON files for different characters and interactables in games.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+To build this project, first install the dependeces with
 
-## Code scaffolding
+npm install
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+To run a development build use
 
-## Build
+npm run electron
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+To run a production build use
 
-## Running unit tests
+npm run electron-prod
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+To package the project as an application use
 
-## Running end-to-end tests
+npm run package
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
