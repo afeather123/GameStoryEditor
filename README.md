@@ -6,19 +6,19 @@ The goal of this project was to make a convenient user interface for creating st
 
 To build this project, first install the dependeces with
 
-npm install
+`npm install`
 
 To run a development build use
 
-npm run electron
+`npm run electron`
 
 To run a production build use
 
-npm run electron-prod
+`npm run electron-prod`
 
 To package the project as an application use
 
-npm run package
+`npm run package`
 
 
 
