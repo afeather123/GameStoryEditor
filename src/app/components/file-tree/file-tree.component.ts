@@ -46,7 +46,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   }
 
   GetJSON() {
-    console.log($(this.files.nativeElement).jstree().get_json());
+    return $(this.files.nativeElement).jstree().get_json();
   }
 
   InitializeTree() {
@@ -100,8 +100,6 @@ export class FileTreeComponent implements OnInit, OnDestroy {
       ]
     });
 
-    $(this.files.nativeElement).bind('before.jstree', (e, data) => {console.log(data.func); });
-
     $(this.files.nativeElement).on('create_node.jstree', (e, data) => {
       if (data.node.type === 'file') {
         this.OnCreateInteractable(data.node.id);
@@ -110,7 +108,6 @@ export class FileTreeComponent implements OnInit, OnDestroy {
 
     $(this.files.nativeElement).on('rename_node.jstree', (e, data) => {
       if (data.node.type === 'file') {
-        console.log(data.text);
       }
     });
 
@@ -177,11 +174,6 @@ export class FileTreeComponent implements OnInit, OnDestroy {
         'separator_after': false,
         '_disabled': false, // (this.check("rename_node", data.reference, this.get_parent(data.reference), "")),
         'label': 'Rename',
-        /*!
-        "shortcut"			: 113,
-        "shortcut_label"	: 'F2',
-        "icon"				: "glyphicon glyphicon-leaf",
-        */
         'action': function (data) {
           const inst = $.jstree.reference(data.reference),
             obj = inst.get_node(data.reference);
@@ -260,7 +252,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
     };
 
     const menu = (node) => {
-      const contextMenu = items;
+      const contextMenu = $.extend(true, {}, items);
       if (node.type === 'file') {
         delete contextMenu.new;
       }
@@ -279,7 +271,6 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   objectifyTree(): any {
     const treeData = $(this.files.nativeElement).jstree().get_json('#',
     {no_state: true, no_data: true, no_li_attr: true, no_a_attr: true, flat: true});
-    console.log(treeData);
     return treeData;
   }
 
