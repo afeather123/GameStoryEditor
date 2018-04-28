@@ -1,4 +1,3 @@
-/* RGB */
 a {
   color: white;
 }
@@ -42,7 +41,7 @@ a {
 }
 
 .local-var {
-  background-color: #71B8CC;
+  background-color: #1A3964;
 }
 
 .file-tree {
@@ -71,4 +70,8 @@ body {
 
 .select2-container {
   margin-right: 5px;
+}
+
+.data-option {
+  background-color: #7DA2CA;
 }

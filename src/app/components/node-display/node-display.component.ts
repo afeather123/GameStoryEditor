@@ -16,19 +16,28 @@ export class NodeDisplayComponent implements OnInit, OnDestroy {
     nodeTrail: []
   };
   @ViewChild('mainNode') mainNode: ElementRef;
-  subscription: Subscription;
+  nodeChangeSubscription: Subscription;
+  interactableSubscription: Subscription;
 
-  constructor(private interactableService: InteractableService) {}
+  constructor(private interactableService: InteractableService) {
+  }
 
   ngOnInit() {
-    this.subscription = this.interactableService.NodeChangeObservable().subscribe((editorNodes: EditorNodes) => {
+    this.nodeChangeSubscription = this.interactableService.NodeChangeObservable().subscribe((editorNodes: EditorNodes) => {
       this.editorNodes = editorNodes;
       this.mainNode.nativeElement.scrollIntoView(true);
+    });
+    this.interactableSubscription = this.interactableService.InteractableObservable().subscribe(() => {
+      this.editorNodes = {
+        currentNode: null,
+        nodeTrail: []
+      };
     });
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.nodeChangeSubscription.unsubscribe();
+    this.interactableSubscription.unsubscribe();
   }
 
   returnToNode(node: DialogueNode) {
