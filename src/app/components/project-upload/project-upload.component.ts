@@ -26,6 +26,7 @@ export class ProjectUploadComponent implements OnInit {
     }
 
     input = document.getElementById('fileinput');
+    console.log(input);
     if (!input) {
       alert('Um, couldn\'t find the fileinput element.');
     } else if (!input.files) {

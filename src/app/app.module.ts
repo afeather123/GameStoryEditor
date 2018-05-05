@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgxElectronModule } from 'ngx-electron';
@@ -44,6 +44,8 @@ import { SelectModule } from 'ng2-select';
 import { Select2MultipleComponent } from './components/select2-multiple/select2-multiple.component';
 import { FusejsPipe } from './pipes/fusejs.pipe';
 import { FusejsService } from './fusejs.service';
+import { AssetService } from './services/asset.service';
+import { AssetRendererComponent } from './components/asset-renderer/asset-renderer.component';
 
 
 @NgModule({
@@ -80,7 +82,8 @@ import { FusejsService } from './fusejs.service';
     DataOptionsComponent,
     DataWSettingEditorComponent,
     Select2MultipleComponent,
-    FusejsPipe
+    FusejsPipe,
+    AssetRendererComponent
   ],
   imports: [
     BrowserModule,
@@ -90,7 +93,8 @@ import { FusejsService } from './fusejs.service';
     SelectModule,
     NgxElectronModule
   ],
-  providers: [VariableSelectService, LoadJsonService, InteractableService, DownloadService, FusejsService],
-  bootstrap: [AppComponent]
+  providers: [VariableSelectService, LoadJsonService, InteractableService, DownloadService, FusejsService, AssetService],
+  bootstrap: [AppComponent],
+  schemas: [NO_ERRORS_SCHEMA]
 })
 export class AppModule { }

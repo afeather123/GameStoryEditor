@@ -131,6 +131,7 @@ export class DownloadService {
   convertToGameFormat(jsTreeData: any) {
     const variableData = this.variableSelectService.stringifyVariables();
     const interactableData = this.interactableService.getInteractables();
+    const dataSettings = this.interactableService.dataSettings;
     const gameVarData = {
       vars: [],
       varNames: {},
@@ -148,7 +149,8 @@ export class DownloadService {
       const interactable = {
         entryPoints: [],
         nodes: [],
-        nodeIDs: {}
+        nodeIDs: {},
+        assetPaths: []
       };
       const thisInteractable = interactableData[ikey];
       for (let i = 0; i < thisInteractable.nodes.array.length; i++) {
@@ -214,6 +216,29 @@ export class DownloadService {
 
         if (node.data !== undefined) {
           formattedNode.data = node.data;
+          const settings = dataSettings.settings;
+          const sp = dataSettings.topFolder.split('\\');
+          const topFolder = sp[sp.length - 1];
+          for (let i = 0; i < node.data.length; i++) {
+            const data = node.data[i];
+            for (let j = 0; j < settings.length; j++) {
+              const setting = settings[j];
+              if (data.name === setting.name) {
+                const options = setting.options;
+                for (let k = 0; k < options.length; k++) {
+                  const option = options[k];
+                  if (data.value === option.option && option.fileName !== undefined) {
+                    const splitPath = option.fileName.split('.');
+                    const path = {
+                      path: [topFolder, setting.path.split('\\').join('/'), option.option].join('/'),
+                      extension: splitPath[splitPath.length - 1]
+                    };
+                    interactable.assetPaths.push(path);
+                  }
+                }
+              }
+            }
+          }
         }
 
         interactable.nodes[interactable.nodeIDs[node.id]] = formattedNode;

@@ -9,6 +9,11 @@ import { LoadJsonService } from './load-json.service';
 import { DataSetting } from '../models/DataSetting';
 import { GlobalDataSettings } from '../models/globalDataSettings';
 import { VariableSelectService } from './variable-select.service';
+import {ElectronService} from 'ngx-electron';
+import {DirectoryData} from '../../../iterateFolders';
+import { DataOption } from '../models/DataOption';
+import { join } from 'path';
+import { AssetService } from './asset.service';
 
 interface InteractableObject {
   [key: string]: Interactable;
@@ -37,15 +42,44 @@ export class InteractableService {
 
   nodeChangeListeners: Subject<EditorNodes> = new Subject<EditorNodes>();
 
-  constructor(private loadJsonService: LoadJsonService, private _variableSelectService: VariableSelectService) {
+  constructor(private loadJsonService: LoadJsonService,
+    private _variableSelectService: VariableSelectService,
+    _electronService: ElectronService,
+    _assetService: AssetService) {
     loadJsonService.InteractableLoadObservable().subscribe((data: any) => {
       this.loadInteractables(data);
     });
     loadJsonService.DattaSettingsLoadObservable().subscribe((data: any) => {
       const loadedSettings = new GlobalDataSettings();
       loadedSettings.presets = data.presets;
-      loadedSettings.settings = data.settings;
+      loadedSettings.settings = data.settings.map(setting =>  new DataSetting(setting));
       this.dataSettings = loadedSettings;
+    });
+    _electronService.ipcRenderer.on('asset-settings', (event, args: DirectoryData) => {
+      const subdirectoryData = args.subdirectoryData;
+      this.dataSettings.topFolder = args.path;
+      for (let i = 0; i < subdirectoryData.length; i++) {
+        const splitDirectory = subdirectoryData[i].relativePath.split('\\');
+        const dataSetting = new DataSetting({
+          name: splitDirectory[splitDirectory.length - 1],
+          type: 'string',
+          path: subdirectoryData[i].relativePath,
+          options: []
+        });
+        for (let j = 0; j < subdirectoryData[i].files.length; j++) {
+          const dataOption: DataOption = {
+            option: subdirectoryData[i].files[j].split('.')[0],
+            fileName: [args.path, subdirectoryData[i].relativePath, subdirectoryData[i].files[j]].join('\\')
+          };
+          dataSetting.options.push(dataOption);
+        }
+        if (this.dataSettings.settings.filter(setting => setting.name === dataSetting.name)) {
+          this.dataSettings.settings.push(dataSetting);
+        } else {
+          const index = this.dataSettings.settings.findIndex(setting => setting.name === dataSetting.name);
+          this.dataSettings.settings[index] = dataSetting;
+        }
+      }
     });
   }
 
@@ -115,7 +149,7 @@ export class InteractableService {
     return this.nodeChangeListeners.asObservable();
   }
 
-  getInteractables(): any {
+  getInteractables(): InteractableObject {
     return this.interactables;
   }
 

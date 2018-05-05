@@ -1,15 +1,18 @@
 import { BrowserWindow, webContents, app, Menu, ipcMain, dialog, FileFilter } from 'electron';
 import { readFile, writeFile, mkdirSync, existsSync } from 'fs';
+import {getSubdirectoryFiles} from './iterateFolders';
+import * as prompt from 'electron-prompt';
 import { join } from 'path';
-
-const path = require('path');
-const url = require('url');
+import * as path from 'path';
+import * as url from 'url';
+import * as http from 'http';
 
 let mainWindow: BrowserWindow;
 let contents: webContents;
 let openPath: string;
 let savePath: string;
 let generatePath: string;
+let assetPort: number;
 let saveFolder = true;
 
 function createWindow () {
@@ -18,7 +21,7 @@ function createWindow () {
   Menu.setApplicationMenu(menu);
   mainWindow = new BrowserWindow({width: 1400, height: 1000});
   contents = mainWindow.webContents;
-  // contents.openDevTools();
+  contents.openDevTools();
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'dist/index.html'),
     protocol: 'file:',
@@ -30,7 +33,10 @@ function createWindow () {
   });
 }
 
-app.on('ready', createWindow);
+app.on('ready', () => {
+  createAssetServer();
+  createWindow();
+});
 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
@@ -40,6 +46,7 @@ app.on('window-all-closed', function () {
 
 app.on('activate', function () {
   if (mainWindow === null) {
+    console.log('PLEASE');
     createWindow();
   }
 });
@@ -58,7 +65,32 @@ const template = [{
           updateMenuPostUpload();
           contents.send('upload-project', data);
         });
-        // contents.send('upload-project', loadPath[0]);
+    }
+  },
+  {
+    label: 'Convert Assets to Data Settings',
+    accelerator: undefined,
+    click: () => {
+      prompt({
+        title: 'Valid file extensions',
+        label: 'Valid file extensions:',
+        value: 'png,jpeg,wav,ogg',
+        type: 'input'
+      })
+      .then((r) => {
+        const loadPath =  dialog.showOpenDialog({properties: ['openDirectory']});
+        if (loadPath === undefined) { return; }
+        let dataSettings;
+        if (r.length > 0) {
+          const validExtensions = r.split(',').map(ext => ext.trim());
+          dataSettings = getSubdirectoryFiles(loadPath[0], validExtensions);
+        } else {
+          dataSettings = getSubdirectoryFiles(loadPath[0]);
+        }
+        console.log(dataSettings);
+        contents.send('asset-settings', dataSettings);
+      })
+      .catch(console.error);
     }
   },
   {
@@ -171,6 +203,16 @@ ipcMain.on('complete-data', (event, args) => {
   }
 });
 
+ipcMain.on('get-asset', (event, args: string) => {
+  readFile(args, 'utf8', (err, data) => {
+    contents.send('load-asset', data);
+  });
+});
+
+ipcMain.on('get-asset-port', () => {
+  contents.send('asset-port', assetPort);
+});
+
 function saveFile(file) {
   writeFile(savePath, file, (err) => {
     if (err) { throw err; }
@@ -194,4 +236,13 @@ function generateProjectFolder(data: string) {
       });
     });
   }
+}
+
+function createAssetServer() {
+    assetPort = http.createServer((req, res) => {
+      // TODO: Add special rendering for certain stuff
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.end(req.url);
+    }).listen(0).address().port;
+    console.log('success!');
 }

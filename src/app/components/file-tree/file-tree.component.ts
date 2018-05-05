@@ -108,6 +108,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
 
     $(this.files.nativeElement).on('rename_node.jstree', (e, data) => {
       if (data.node.type === 'file') {
+        this.updateTree();
       }
     });
 
@@ -174,7 +175,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
         'separator_after': false,
         '_disabled': false, // (this.check("rename_node", data.reference, this.get_parent(data.reference), "")),
         'label': 'Rename',
-        'action': function (data) {
+        'action': (data) => {
           const inst = $.jstree.reference(data.reference),
             obj = inst.get_node(data.reference);
           inst.edit(obj);

@@ -3,11 +3,13 @@ export class DataSetting {
     name: string;
     type: string;
     options?: DataOption[];
+    path?: string;
 
     constructor(data: any) {
         this.name = data.name;
         this.type = data.type;
         this.options = data.options;
+        this.path = data.path;
     }
 
     getOptionsArray(): Array<string> {

@@ -3,6 +3,7 @@ import { PresetName } from './presetName';
 export class GlobalDataSettings {
     settings: DataSetting[] = [];
     presets: string[] = [];
+    topFolder?: string;
 
     constructor() {}
 

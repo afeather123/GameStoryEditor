@@ -2,21 +2,25 @@
 exports.__esModule = true;
 var electron_1 = require("electron");
 var fs_1 = require("fs");
+var iterateFolders_1 = require("./iterateFolders");
+var prompt = require("electron-prompt");
 var path_1 = require("path");
-var path = require('path');
-var url = require('url');
+var path = require("path");
+var url = require("url");
+var http = require("http");
 var mainWindow;
 var contents;
 var openPath;
 var savePath;
 var generatePath;
+var assetPort;
 var saveFolder = true;
 function createWindow() {
     var menu = electron_1.Menu.buildFromTemplate(template);
     electron_1.Menu.setApplicationMenu(menu);
     mainWindow = new electron_1.BrowserWindow({ width: 1400, height: 1000 });
     contents = mainWindow.webContents;
-    // contents.openDevTools();
+    contents.openDevTools();
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'dist/index.html'),
         protocol: 'file:',
@@ -26,7 +30,10 @@ function createWindow() {
         mainWindow = null;
     });
 }
-electron_1.app.on('ready', createWindow);
+electron_1.app.on('ready', function () {
+    createAssetServer();
+    createWindow();
+});
 electron_1.app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') {
         electron_1.app.quit();
@@ -34,6 +41,7 @@ electron_1.app.on('window-all-closed', function () {
 });
 electron_1.app.on('activate', function () {
     if (mainWindow === null) {
+        console.log('PLEASE');
         createWindow();
     }
 });
@@ -55,7 +63,34 @@ var template = [{
                         updateMenuPostUpload();
                         contents.send('upload-project', data);
                     });
-                    // contents.send('upload-project', loadPath[0]);
+                }
+            },
+            {
+                label: 'Convert Assets to Data Settings',
+                accelerator: undefined,
+                click: function () {
+                    prompt({
+                        title: 'Valid file extensions',
+                        label: 'Valid file extensions:',
+                        value: 'png,jpeg,wav,ogg',
+                        type: 'input'
+                    })
+                        .then(function (r) {
+                        var loadPath = electron_1.dialog.showOpenDialog({ properties: ['openDirectory'] });
+                        if (loadPath === undefined) {
+                            return;
+                        }
+                        var dataSettings;
+                        if (r.length > 0) {
+                            var validExtensions = r.split(',').map(function (ext) { return ext.trim(); });
+                            dataSettings = iterateFolders_1.getSubdirectoryFiles(loadPath[0], validExtensions);
+                        }
+                        else {
+                            dataSettings = iterateFolders_1.getSubdirectoryFiles(loadPath[0]);
+                        }
+                        console.log(dataSettings);
+                        contents.send('asset-settings', dataSettings);
+                    })["catch"](console.error);
                 }
             },
             {
@@ -166,6 +201,14 @@ electron_1.ipcMain.on('complete-data', function (event, args) {
         saveFile(args);
     }
 });
+electron_1.ipcMain.on('get-asset', function (event, args) {
+    fs_1.readFile(args, 'utf8', function (err, data) {
+        contents.send('load-asset', data);
+    });
+});
+electron_1.ipcMain.on('get-asset-port', function () {
+    contents.send('asset-port', assetPort);
+});
 function saveFile(file) {
     fs_1.writeFile(savePath, file, function (err) {
         if (err) {
@@ -194,4 +237,12 @@ function generateProjectFolder(data) {
             });
         });
     }
+}
+function createAssetServer() {
+    assetPort = http.createServer(function (req, res) {
+        // TODO: Add special rendering for certain stuff
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.end(req.url);
+    }).listen(0).address().port;
+    console.log('success!');
 }
