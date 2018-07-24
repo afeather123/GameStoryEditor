@@ -1,4 +1,6 @@
 export interface NodeData {
     name: string;
-    value: (string | number | boolean);
+    values: {
+        [key: string]: (string | number | boolean)
+    };
 }

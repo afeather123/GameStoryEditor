@@ -13,7 +13,7 @@ import { VariableSelectService } from '../services/variable-select.service';
 export class Interactable {
     nodes: ArrayList<DialogueNode> = new ArrayList<DialogueNode>();
     entryPoints: EntryPoint[] = [];
-    dataSettings: GlobalDataSettings;
+    dataSettings: GlobalDataSettings = new GlobalDataSettings();
 
     constructor(data?: any, variableSelectService?: VariableSelectService) {
         const newNodes: DialogueNode[] = [];
@@ -65,7 +65,7 @@ export class Interactable {
             this.dataSettings.presets.forEach(preset => {
                 const datum: NodeData = {
                     name: preset,
-                    value: ''
+                    values: {value: ''}
                 };
                 data.push(datum);
             });

@@ -7,17 +7,14 @@
       <button class="btn btn-danger float-right" (click)="DeleteSetting()">
           <i class="fa fa-trash"></i>
       </button>
+      <button (click)="AddField()" class="btn btn-primary float-right">Add Field</button>
     </h5>
   </div>
   <div id="dataoptions{{id}}" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
-    <div class="card-body">
+    <div class="card-body" *ngIf="dataSetting.dataFields === undefined || dataSetting.dataFields.length <= 0">
       <div class="row form-inline mb-2">
           <label class="mr-2">Type: </label>
-          <select (change)="ChangeType($event)" class="form-control mr-2">
-            <option value="string">string</option>
-            <option value="boolean">boolean</option>
-            <option value="number">number</option>
-          </select>
+          <app-data-type-selector [data]="this.dataSetting" [propertyName]="'type'" (changeType)="ChangeType($event)"></app-data-type-selector>
           <div *ngIf="dataSetting.type === 'string' " (submit)="AddOption($event)">
             <input type="text" placeholder="New option" [(ngModel)]="optionName" *ngIf="dataSetting.type === 'string'" class="form-control mr-2">
             <button (click)="AddOption()" class="btn btn-primary">Add</button>
@@ -28,6 +25,9 @@
           <input type="text" *ngIf="dataSetting.type === 'string'" [(ngModel)]="option.option" class="form-control optionField mb-2">
         </div>
       </div>
+    </div>
+    <div class="card-body" *ngIf="dataSetting.dataFields !== undefined && dataSetting.dataFields.length > 0">
+      <app-data-field [dataField]="dataField" *ngFor="let dataField of dataSetting.dataFields" (deleteField)="DeleteField($event)"></app-data-field>  
     </div>
   </div>
 </div>

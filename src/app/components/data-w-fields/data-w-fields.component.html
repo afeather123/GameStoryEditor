@@ -1,0 +1,23 @@
+<div class="card">
+    <div class="card-header" role="tab" id="section1HeaderId">
+      <h5 class="mb-0">
+        <a data-toggle="collapse" data-parent="#accordianId" href="#dataWField{{id}}" aria-expanded="true" [attr.aria-controls]="'dataWField' + id">
+          {{nodeData.name}}
+        </a>
+      </h5>
+    </div>
+    <div id="dataWField{{id}}" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
+      <div class="card-body">
+        <div class="form-inline" *ngFor="let field of getFields(nodeData.name)">
+          <label>{{field.name}}: </label>
+          <app-select2 [options]="getFieldOptions(field)" [data]="nodeData.values" [propertyName]="field.name" *ngIf="field.type !== 'number' && field.type !== 'boolean'"></app-select2> 
+          <input type="number" class="form-control" [(ngModel)]="nodeData.values[field.name]" *ngIf="field.type === 'number'">
+          <select [value]="nodeData.values[field.name].toString()" *ngIf="field.type === 'boolean'" (change)="changeBool($event.target.value, field.name)"
+              class="form-control">
+              <option value="true">True</option>
+              <option value="false">False</option>
+            </select>
+        </div>
+      </div>
+    </div>
+</div>

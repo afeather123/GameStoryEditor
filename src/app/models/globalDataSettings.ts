@@ -1,8 +1,15 @@
 import { DataSetting } from './DataSetting';
 import { PresetName } from './presetName';
+import { DataType } from './dataType';
+
+interface DataTypeObject {
+    [key: string]: DataType;
+}
+
 export class GlobalDataSettings {
     settings: DataSetting[] = [];
     presets: string[] = [];
+    dataTypes: DataType[] = [];
     topFolder?: string;
 
     constructor() {}

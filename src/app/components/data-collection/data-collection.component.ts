@@ -27,35 +27,41 @@ export class DataCollectionComponent implements OnInit {
 
   changeType(data: NodeData,  type: string) {
     console.log('HAPPENING?');
-    if (typeof data.value === type) {
+    if (typeof data.values['value'] === type) {
       return;
     } else {
       if (type === 'string') {
-        data.value = 'default';
+        data.values['value'] = 'default';
       } else if (type === 'number') {
-        data.value = 0;
+        data.values['value'] = 0;
       } else if (type === 'boolean') {
-        data.value = true;
+        data.values['value'] = true;
       }
     }
   }
 
   TypeOf (data: NodeData) {
-    return typeof data.value;
+    return typeof data.values['value'];
   }
 
   changeBool(bool: string, data: NodeData) {
     if (bool === 'true') {
-      data.value = true;
+      data.values['value'] = true;
     } else {
-      data.value = false;
+      data.values['value'] = false;
     }
+  }
+
+  log(e) {
+    console.log(e);
   }
 
   addData(e: Event) {
     const newData: NodeData = {
       name: 'data',
-      value: 'default'
+      values: {
+        value: 'default'
+      }
     };
     if (this.dataSettings.settings.length > 0) {
       newData.name = this.dataSettings.settings[0].name;
@@ -82,7 +88,27 @@ export class DataCollectionComponent implements OnInit {
     return thisSetting;
   }
 
+  dataHasSettingAndFields(dataName: string): boolean {
+    const dataSetting = this.getSetting(dataName);
+    if (dataSetting === undefined) {
+      return null;
+    }
+    if (dataSetting.dataFields !== undefined && dataSetting.dataFields.length > 0) {
+      return true;
+    }
+    return false;
+  }
+
   changeDataName(data: NodeData, newName: string) {
     data.name = newName;
+    const hasFields = this.dataHasSettingAndFields(newName);
+    if (hasFields !== true) {
+      const keys = Object.keys(data.values);
+      keys.forEach(key => {
+        if (key !== 'value') {
+          delete data.values[key];
+        }
+      });
+    }
   }
 }

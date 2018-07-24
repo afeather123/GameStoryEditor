@@ -197,6 +197,7 @@ ipcMain.on('complete-save', (event, args) => {
 
 ipcMain.on('complete-data', (event, args) => {
   if (saveFolder) {
+    console.log("Generating folder...");
     generateProjectFolder(args);
   } else {
     saveFile(args);

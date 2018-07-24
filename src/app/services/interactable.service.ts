@@ -14,6 +14,7 @@ import {DirectoryData} from '../../../iterateFolders';
 import { DataOption } from '../models/DataOption';
 import { join } from 'path';
 import { AssetService } from './asset.service';
+import { DataType } from '../models/dataType';
 
 interface InteractableObject {
   [key: string]: Interactable;
@@ -53,6 +54,8 @@ export class InteractableService {
       const loadedSettings = new GlobalDataSettings();
       loadedSettings.presets = data.presets;
       loadedSettings.settings = data.settings.map(setting =>  new DataSetting(setting));
+      loadedSettings.dataTypes = data.dataTypes;
+      loadedSettings.topFolder = data.topFolder;
       this.dataSettings = loadedSettings;
     });
     _electronService.ipcRenderer.on('asset-settings', (event, args: DirectoryData) => {
@@ -62,18 +65,25 @@ export class InteractableService {
         const splitDirectory = subdirectoryData[i].relativePath.split('\\');
         const dataSetting = new DataSetting({
           name: splitDirectory[splitDirectory.length - 1],
-          type: 'string',
+          type: splitDirectory[splitDirectory.length - 1],
           path: subdirectoryData[i].relativePath,
           options: []
         });
+        const dataType: DataType = {
+          name: splitDirectory[splitDirectory.length - 1],
+          path: subdirectoryData[i].relativePath,
+          options: []
+        };
         for (let j = 0; j < subdirectoryData[i].files.length; j++) {
           const dataOption: DataOption = {
             option: subdirectoryData[i].files[j].split('.')[0],
             fileName: [args.path, subdirectoryData[i].relativePath, subdirectoryData[i].files[j]].join('\\')
           };
-          dataSetting.options.push(dataOption);
+          dataType.options.push(dataOption);
         }
-        if (this.dataSettings.settings.filter(setting => setting.name === dataSetting.name)) {
+        dataSetting.options = dataType.options;
+        this.dataSettings.dataTypes.push(dataType);
+        if (this.dataSettings.settings.filter(setting => setting.name === dataSetting.name).length <= 0) {
           this.dataSettings.settings.push(dataSetting);
         } else {
           const index = this.dataSettings.settings.findIndex(setting => setting.name === dataSetting.name);
@@ -117,7 +127,7 @@ export class InteractableService {
   }
 
   addNode() {
-    this.addNodeSubscribers.next();
+    this.addNodeSubscribers.next(this.jsTreeData);
   }
 
   deleteNode(id: string) {

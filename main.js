@@ -195,6 +195,7 @@ electron_1.ipcMain.on('complete-save', function (event, args) {
 });
 electron_1.ipcMain.on('complete-data', function (event, args) {
     if (saveFolder) {
+        console.log("Generating folder...");
         generateProjectFolder(args);
     }
     else {

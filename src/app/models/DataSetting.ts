@@ -1,8 +1,10 @@
 import { DataOption } from './DataOption';
+import { DataField } from './dataField';
 export class DataSetting {
     name: string;
     type: string;
     options?: DataOption[];
+    dataFields?: DataField[];
     path?: string;
 
     constructor(data: any) {
@@ -10,6 +12,7 @@ export class DataSetting {
         this.type = data.type;
         this.options = data.options;
         this.path = data.path;
+        this.dataFields = data.dataFields;
     }
 
     getOptionsArray(): Array<string> {

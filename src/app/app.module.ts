@@ -46,6 +46,11 @@ import { FusejsPipe } from './pipes/fusejs.pipe';
 import { FusejsService } from './fusejs.service';
 import { AssetService } from './services/asset.service';
 import { AssetRendererComponent } from './components/asset-renderer/asset-renderer.component';
+import { DataFieldComponent } from './components/data-field/data-field.component';
+import { DataWFieldsComponent } from './components/data-w-fields/data-w-fields.component';
+import { DataTypeSetupComponent } from './components/data-type-setup/data-type-setup.component';
+import { DataTypeComponent } from './components/data-type/data-type.component';
+import { DataTypeSelectorComponent } from './components/data-type-selector/data-type-selector.component';
 
 
 @NgModule({
@@ -83,7 +88,12 @@ import { AssetRendererComponent } from './components/asset-renderer/asset-render
     DataWSettingEditorComponent,
     Select2MultipleComponent,
     FusejsPipe,
-    AssetRendererComponent
+    AssetRendererComponent,
+    DataFieldComponent,
+    DataWFieldsComponent,
+    DataTypeSetupComponent,
+    DataTypeComponent,
+    DataTypeSelectorComponent
   ],
   imports: [
     BrowserModule,

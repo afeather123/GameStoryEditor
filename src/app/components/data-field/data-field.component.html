@@ -1,0 +1,33 @@
+<div class="card">
+  <div class="card-header data-option" role="tab" id="section1HeaderId">
+    <h5 class="mb-0">
+      <a data-toggle="collapse" data-parent="#accordianId" href="#dataField{{id}}" aria-expanded="true" [attr.aria-controls]="'dataField' + id">
+        {{dataField.name}}
+      </a>
+      <button class="btn btn-danger float-right" (click)="DeleteField()">
+          <i class="fa fa-trash"></i>
+      </button>
+    </h5>
+  </div>
+  <div id="dataField{{id}}" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
+    <div class="card-body">
+      <div class="row form-inline mb-2">
+        <label class="mr-2">Name: </label>
+        <input type="text" [(ngModel)]="dataField.name" class="form-control mr-2">
+      </div>
+      <div class="row form-inline mb-2">
+          <label class="mr-2">Type: </label>
+          <app-data-type-selector [data]="this.dataField" [propertyName]="'type'" (changeType)="ChangeType($event)"></app-data-type-selector>
+          <div *ngIf="dataField.type === 'string'">
+            <input type="text" placeholder="New option" [(ngModel)]="optionName" *ngIf="dataField.type === 'string'" class="form-control mr-2">
+            <button (click)="AddOption()" class="btn btn-primary">Add</button>
+          </div>
+      </div>
+      <div *ngIf="dataField.options != null">
+        <div class="row" *ngFor="let option of dataField.options">
+          <input type="text" *ngIf="dataField.type === 'string'" [(ngModel)]="option.option" class="form-control optionField mb-2">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

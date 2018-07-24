@@ -83,7 +83,9 @@ export class NodeComponent implements OnInit {
   AddData() {
     const newData: NodeData = {
       name: 'data',
-      value: 'default'
+      values: {
+        value: 'default'
+      }
     };
     if (this.node.data === undefined || this.node.data === null) {
       this.node.data = [];

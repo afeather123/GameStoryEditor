@@ -5,6 +5,7 @@ import { InteractableService } from './interactable.service';
 import { VariableSelectService } from './variable-select.service';
 import { LoadJsonService } from './load-json.service';
 import {ElectronService} from 'ngx-electron';
+import { findDataTypeOfName } from '../models/model_functions/findDataTypeOfName';
 
 @Injectable()
 export class DownloadService {
@@ -37,7 +38,9 @@ export class DownloadService {
       this.filename = name;
     });
     this._electronService.ipcRenderer.on('download-project', () => {this.electronDownloadRequest(); });
-    this._electronService.ipcRenderer.on('download-data', () => { this.DownloadProject(false); });
+    this._electronService.ipcRenderer.on('download-data', () => { 
+      console.log("THIS HAPPENS");
+      this.DownloadProject(false); });
   }
 
   private electronDownloadRequest() {
@@ -215,37 +218,90 @@ export class DownloadService {
         }
 
         if (node.data !== undefined) {
-          formattedNode.data = node.data;
-          const settings = dataSettings.settings;
-          const sp = dataSettings.topFolder.split('\\');
-          const topFolder = sp[sp.length - 1];
-          for (let i = 0; i < node.data.length; i++) {
-            const data = node.data[i];
-            for (let j = 0; j < settings.length; j++) {
-              const setting = settings[j];
-              if (data.name === setting.name) {
-                const options = setting.options;
-                for (let k = 0; k < options.length; k++) {
-                  const option = options[k];
-                  if (data.value === option.option && option.fileName !== undefined) {
-                    const splitPath = option.fileName.split('.');
-                    const path = {
-                      path: [topFolder, setting.path.split('\\').join('/'), option.option].join('/'),
-                      extension: splitPath[splitPath.length - 1]
-                    };
-                    interactable.assetPaths.push(path);
+          // formattedNode.data = node.data.values['value'];
+          node.data.forEach((datum) => {
+            const keys = Object.keys(datum.values);
+            let formattedData: any;
+            if (keys.length === 1) {
+              formattedData = {
+                name: datum.name,
+                value: datum.values['value']
+              };
+            } else {
+              formattedData = {
+                name: datum.name,
+                value: datum.values
+              };
+            }
+            formattedNode.data.push(formattedData);
+          });
+          if (dataSettings.topFolder !== undefined) {
+            const settings = dataSettings.settings;
+            const sp = dataSettings.topFolder.split('\\');
+            const topFolder = sp[sp.length - 1];
+            for (let i = 0; i < node.data.length; i++) {
+              const data = node.data[i];
+              for (let j = 0; j < settings.length; j++) {
+                const setting = settings[j];
+                if (data.name === setting.name) {
+                  const options = setting.options;
+                  for (let k = 0; k < options.length; k++) {
+                    const option = options[k];
+                    if (data.values['value'] === option.option) {
+                      const dataType = findDataTypeOfName(this.interactableService.dataSettings.dataTypes, setting.type);
+                      if (dataType !== undefined && dataType !== null) {
+                        const splitPath = option.fileName.split('.');
+                        const path = {
+                          path: [topFolder, dataType.path.split('\\').join('/'), option.option].join('/'),
+                          extension: splitPath[splitPath.length - 1]
+                        };
+                        interactable.assetPaths.push(path);
+                      }
+                    }
+                  }
+                  const fields = setting.dataFields;
+                  if (fields !== undefined) {
+                    for (let k = 0; k < fields.length; k++) {
+                      const field = fields[k];
+                      const fieldOptions = fields[k].options;
+                      for (let l = 0; l < fieldOptions.length; l++) {
+                        const fieldOption = fieldOptions[l];
+                        if (data.values[field.name] === fieldOption.option && fieldOption.fileName !== undefined && fieldOption.fileName !== null) {
+                          const splitPath = fieldOption.fileName.split('.');
+                          const dataType = findDataTypeOfName(this.interactableService.dataSettings.dataTypes, field.type);
+                          const path = {
+                            path: [topFolder, dataType.path.split('\\').join('/'), fieldOption.option].join('/'),
+                            extension: splitPath[splitPath.length - 1]
+                          };
+                          interactable.assetPaths.push(path);
+                        }
+                      }
+                    }
                   }
                 }
               }
             }
           }
+          // const filteredAssets = [];
+          // for (let i = 0; i < interactable.assetPaths.length; i++) {
+          //   let isUnique = true;
+          //   for (let j = 0; j < filteredAssets.length; j++) {
+          //     if (filteredAssets[j].path === interactable.assetPaths[i].path
+          //       && filteredAssets[j].extension === interactable.assetPaths[i].extension) {
+          //       isUnique = false;
+          //     }
+          //   }
+          //   if (isUnique) {
+          //     filteredAssets.push(interactable.assetPaths[i]);
+          //   }
+          // }
+          // interactable.assetPaths = filteredAssets;
         }
 
         interactable.nodes[interactable.nodeIDs[node.id]] = formattedNode;
       });
 
       interactable.nodeIDs = undefined;
-
       jsTreeData.forEach(element => {
         if (element.id === ikey) {
           gameInteractableData[element.text] = interactable;

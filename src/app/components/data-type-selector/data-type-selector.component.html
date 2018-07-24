@@ -1,0 +1,6 @@
+<select (change)="ChangeType($event.target.value)" [value]="data[propertyName]" class="form-control mr-2">
+  <option value="string">string</option>
+  <option value="boolean">boolean</option>
+  <option value="number">number</option>
+  <option value="{{type.name}}" *ngFor="let type of dataTypes">{{type.name}}</option>
+</select>

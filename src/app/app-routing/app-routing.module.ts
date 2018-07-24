@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainEditorComponent } from '../components/main-editor/main-editor.component';
 import { DataSetupComponent } from '../components/data-setup/data-setup.component';
+import { DataTypeSetupComponent } from '../components/data-type-setup/data-type-setup.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'data-settings',
     component: DataSetupComponent
+  },
+  {
+    path: 'data-types',
+    component: DataTypeSetupComponent
   }
 ];
 

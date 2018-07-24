@@ -1,0 +1,8 @@
+<div class="container">
+  <h3 class="mt-3">Data Types</h3>
+  <div class="form-inline mb-3 mt-3">
+    <input type="text" placeholder="Data name..." [(ngModel)]="typeName" class="form-control mr-2">
+    <button (click)="addType()" class="btn btn-primary">Add</button>
+  </div>
+  <app-data-type [dataType]="type" (deleteType)="deleteType($event)" *ngFor="let type of dataSettings.dataTypes"></app-data-type>
+</div>
